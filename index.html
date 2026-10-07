@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JHON v2 FIXED EVENT v17 - X Image FB Style + Cover Fix</title>
+<title>JHON v19 - X Schedule AUTO + Event FB</title>
 <style>
 :root{--bg:#1e2130;--panel:#2a2f45;--panel2:#242840;--line:#3d4362;--txt:#f1f3fa;--mut:#b8bfda;--dim:#8b93b8;--ok:#38bdf8;--accent:#818cf8}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);background-image:radial-gradient(circle at 20% 0%,#2d3252 0%,var(--bg) 55%);color:var(--txt);font-family:Inter,system-ui,sans-serif;font-size:13px}
@@ -59,8 +59,8 @@ pre{white-space:pre-wrap;word-break:break-all;background:#14172a;border:1px soli
 <div style="display:flex;gap:10px;align-items:center">
   <div class="logo">JH</div>
   <div>
-    <b>JHON v2 FIXED EVENT</b> <span class="badge-jhon">UNIVERSAL</span> <span class="env-badge" id="envBadge">AUTO-DETECT</span>
-    <br><small style="color:var(--dim)">Player v2.9b: Multi-Strategy URL Delete + X Image FB Style + Cover Fix</small>
+    <b>JHON v19 FIXED EVENT</b> <span class="badge-jhon">UNIVERSAL</span> <span class="env-badge" id="envBadge">AUTO-DETECT</span>
+    <br><small style="color:var(--dim)">Player v2.9d: X Schedule AUTO + X Image FB Style + Cover Fix</small>
   </div>
 </div>
 <div style="display:flex;align-items:center;gap:8px">
@@ -93,7 +93,7 @@ pre{white-space:pre-wrap;word-break:break-all;background:#14172a;border:1px soli
 </div>
 </div>
 <div id="tab-json" style="display:none">
-<p class="hint">Paste JSON dari JHON RECORDER v3.10:</p>
+<p class="hint">Paste JSON dari JHON RECORDER v3.11:</p>
 <textarea id="jsonIn" placeholder='[{"type":"CLICK","selector":"..."}]'></textarea>
 <div style="display:flex;gap:6px;margin-top:8px">
 <button class="btn" onclick="loadContoh()">Contoh</button>
@@ -126,7 +126,7 @@ pre{white-space:pre-wrap;word-break:break-all;background:#14172a;border:1px soli
 <option value=" - ">Strip ( - )</option>
 <option value=", ">Koma (, )</option>
 <option value="\n">Baris baru (\n)</option>
-<option value=" ||| ">Buat Acara ( ||| )</option>
+<option value=" ||| ">Buat Acara / Schedule ( ||| )</option>
 <option value="">Tanpa pemisah</option>
 </select>
 </div>
@@ -150,11 +150,12 @@ pre{white-space:pre-wrap;word-break:break-all;background:#14172a;border:1px soli
 <div id="xStat" style="display:none;margin-top:6px;padding:8px;background:#0a0a0a;border-radius:6px;font-size:10px;color:#ccc;white-space:pre-wrap;border-left:3px solid #1d9bf0"></div>
 </div>
 <div class="link-box" style="margin-top:8px;background:linear-gradient(135deg,#f59e0b15,#ef444415);border-color:#f59e0b60">
-<label><input type="checkbox" id="eventMode" checked onchange="fmtChanged()"><b>📅 MODE BUAT ACARA</b></label>
+<label><input type="checkbox" id="eventMode" checked onchange="fmtChanged()"><b>📅 MODE BUAT ACARA / SCHEDULE</b></label>
+<div class="hint" style="color:#7dd3fc;margin-top:4px">Wajib aktif kalau pakai format Excel <code>isi ||| tanggal ||| jam</code></div>
 </div>
 <div class="link-box" style="background:linear-gradient(135deg,#10b98115,#0ea5e915);border-color:#10b98160">
 <label><input type="checkbox" id="autoRemoveLink"><b>🔗 Auto-hapus URL (FB only)</b></label>
-<div class="hint" style="color:#7dd3fc;margin-top:4px">Multi-strategy block delete — coba 6 cara sampai berhasil, preview card tetap terjaga.</div>
+<div class="hint" style="color:#7dd3fc;margin-top:4px">Multi-strategy block delete — coba 6 cara sampai berhasil.</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
 <label style="font-size:10px">Preview wait (s)<input type="number" id="previewWait" value="3" min="1" max="10"></label>
 <label style="font-size:10px">Delay<input type="text" id="delay" value="auto"></label>
@@ -166,11 +167,13 @@ pre{white-space:pre-wrap;word-break:break-all;background:#14172a;border:1px soli
 </div>
 
 <div class="card">
-<h3>3️⃣ GENERATE UNIVERSAL PLAYER</h3>
-<button class="btn ok big" id="btnGen">⚡ GENERATE PLAYER</button>
+<h3>3️⃣ GENERATE (PLAYER / EVENT OTOMATIS)</h3>
+<button class="btn ok big" id="btnGen">⚡ GENERATE</button>
+<div class="hint">Mode Buat Acara aktif + Excel berformat acara → script Event FB. Selain itu → Player (FB / X / X Schedule).</div>
 <div class="link-box" style="margin-top:10px;background:linear-gradient(135deg,#f59e0b15,#ef444415);border-color:#f59e0b60">
 <label style="font-size:10px;display:block;margin-top:6px">Bahasa FB<select id="evLang" style="width:100%"><option value="id">Indonesia</option><option value="en">English</option></select></label>
-<button class="btn ok big" id="btnGenEvent" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">📅 GENERATE EVENT SCRIPT</button>
+<div class="hint" style="margin:0 0 6px;color:#fbbf24">📅 Pengaturan Event FB (dipakai otomatis oleh tombol GENERATE)</div>
+<button class="btn ok big" id="btnGenEvent" style="display:none;background:linear-gradient(135deg,#f59e0b,#ef4444)">📅 GENERATE EVENT SCRIPT</button>
 <label style="font-size:10px;display:block;margin-top:8px">Tahun<input type="number" id="evYear" min="2024" max="2100"></label>
 <label style="font-size:11px;display:block;margin-top:10px"><input type="checkbox" id="evLoc" checked> 📍 Isi lokasi</label>
 <label style="font-size:10px;display:block;margin-top:8px">🖼️ Foto sampul
@@ -191,8 +194,8 @@ pre{white-space:pre-wrap;word-break:break-all;background:#14172a;border:1px soli
 <div class="hint" id="genInfo"></div>
 <h3 style="margin-top:16px">🎬 Rekaman Manual</h3>
 <div style="display:flex;gap:6px;flex-wrap:wrap">
-<button class="btn" id="btnRecDown">⬇ Download Recorder v3.10</button>
-<button class="btn w" id="btnRecCopy">📋 Copy Recorder v3.10</button>
+<button class="btn" id="btnRecDown">⬇ Download Recorder v3.11</button>
+<button class="btn w" id="btnRecCopy">📋 Copy Recorder v3.11</button>
 </div>
 </div>
 </div>
@@ -225,7 +228,7 @@ const AUTOSAVE_KEY = 'jhon_v2_autosave';
 let USER_TEMPLATES = {};
 let activeTemplate = null;
 const SEED_VER_KEY = 'jhon_v2_seed_ver';
-const SEED_VER = '5';
+const SEED_VER = '8';
 const DEFAULT_TEMPLATES = {
   '🇮🇩 FB - Beranda (Feed)': [
     { type: 'CLICK', selector: '[aria-label="Buat postingan"]', value: '', url: '' },
@@ -286,6 +289,18 @@ const DEFAULT_TEMPLATES = {
   '🐦 X - Post (Universal)': [
     { type: 'CLICK', selector: '[data-testid="SideNav_NewTweet_Button"], [data-testid="FloatingActionButtons_Tweet_Button"]', value: '', url: '' },
     { type: 'TYPE', selector: '[data-testid="tweetTextarea_0"]', value: 'POST_CONTENT', url: '', autoRemoveLink: false, previewWait: 3 },
+    { type: 'CLICK', selector: 'POST_BUTTON_REAL', value: '', url: '' }
+  ],
+  '🐦 X - Schedule AUTO (Excel)': [
+    { type: 'CLICK', selector: '[data-testid="SideNav_NewTweet_Button"], [data-testid="FloatingActionButtons_Tweet_Button"]', value: '', url: '' },
+    { type: 'TYPE', selector: '[data-testid="tweetTextarea_0"]', value: 'POST_CONTENT', url: '', autoRemoveLink: false, previewWait: 3 },
+    { type: 'CLICK', selector: '[aria-label="Schedule post"], [aria-label="Jadwalkan postingan"]', value: '', url: '' },
+    { type: 'SET_SELECT', selector: 'X_SCHEDULE_SELECT', value: '', url: '', _kind: 'month', _value: 'AUTO' },
+    { type: 'SET_SELECT', selector: 'X_SCHEDULE_SELECT', value: '', url: '', _kind: 'day', _value: 'AUTO' },
+    { type: 'SET_SELECT', selector: 'X_SCHEDULE_SELECT', value: '', url: '', _kind: 'year', _value: 'AUTO' },
+    { type: 'SET_SELECT', selector: 'X_SCHEDULE_SELECT', value: '', url: '', _kind: 'hour', _value: 'AUTO' },
+    { type: 'SET_SELECT', selector: 'X_SCHEDULE_SELECT', value: '', url: '', _kind: 'minute', _value: 'AUTO' },
+    { type: 'CLICK', selector: 'X_CONFIRM_SCHEDULE', value: '', url: '' },
     { type: 'CLICK', selector: 'POST_BUTTON_REAL', value: '', url: '' }
   ]
 };
@@ -380,10 +395,11 @@ function renderActiveSteps(){
   if (!state.json.length) { el.innerHTML = ''; return; }
   let html = '<div style="font-size:10px;color:var(--dim);margin-bottom:6px">✅ Steps aktif: ' + state.json.length + ' langkah</div>';
   state.json.forEach((s, i) => {
-    let icon = s.type === 'CLICK' ? '👆' : s.type === 'TYPE' ? '⌨️' : '⚙️';
+    let icon = s.type === 'CLICK' ? '👆' : s.type === 'TYPE' ? '⌨️' : s.type === 'SET_SELECT' ? '📅' : '⚙️';
     let label = s.text ? 'TEXT:' + s.text : (s.selector || '');
     if (s.selector === 'POST_BUTTON_REAL') label = 'Submit (Post)';
-    html += '<div style="font-size:10px;padding:4px 6px;background:var(--panel2);border-radius:6px;margin-bottom:3px;border-left:3px solid ' + (s.type === 'TYPE' ? '#10b981' : '#0ea5e9') + '">' + icon + ' <b>' + (i+1) + '.</b> ' + escapeHtml(label.slice(0, 45)) + '</div>';
+    if (s.type === 'SET_SELECT') label = s._kind + ' = ' + s._value;
+    html += '<div style="font-size:10px;padding:4px 6px;background:var(--panel2);border-radius:6px;margin-bottom:3px;border-left:3px solid ' + (s.type === 'TYPE' ? '#10b981' : s.type === 'SET_SELECT' ? '#f59e0b' : '#0ea5e9') + '">' + icon + ' <b>' + (i+1) + '.</b> ' + escapeHtml(label.slice(0, 45)) + '</div>';
   });
   el.innerHTML = html;
 }
@@ -497,9 +513,10 @@ function renderXlsPreview(){
   const eventModeCb = document.getElementById('eventMode');
   const isEventMode = eventModeCb && eventModeCb.checked;
   const groupOf = (fmtCbX && fmtCbX.checked) ? detectSchema(state.headers) : null;
-  if(isEventMode && groupOf){
+  const looseEvent = isEventMode && !groupOf && !detectSchema(state.headers) && /acara|event/i.test(String(activeTemplate || ''));
+  if(isEventMode && (groupOf || looseEvent)){
     state.meta = [];
-    state.target = state.rows.map(r => buildEventTarget(r, state.headers)).filter(Boolean);
+    state.target = state.rows.map(r => groupOf ? buildEventTarget(r, state.headers) : buildEventTargetLoose(r, colIdxs)).filter(Boolean);
     const dropped = state.rows.length - state.target.length;
     if (dropped !== window._lastDropped){
       window._lastDropped = dropped;
@@ -601,14 +618,12 @@ function clearAutosave(){
   } catch(e) {}
 }
 window.addEventListener('beforeunload', () => { try { saveAuto(true); } catch(e){} });
-
 /* ============================================================
-   RECORDER SOURCE — v3.10
+   RECORDER SOURCE — v3.11 (X Schedule Support)
    ============================================================ */
-const RECORDER_SOURCE = "// ==UserScript==\n// @name         JHON RECORDER v3.10\n// @namespace    jhon-recorder\n// @version      3.10\n// @description  Rekam klik & ketik FB (feed/page/grup/profile) + X - Composer grup fix\n// @author       JHON\n// @match        *://*.facebook.com/*\n// @match        *://x.com/*\n// @match        *://*.x.com/*\n// @match        *://twitter.com/*\n// @match        *://*.twitter.com/*\n// @grant        none\n// @run-at       document-idle\n// ==/UserScript==\n\n(function(){\n  'use strict';\n\n  const IS_X = /(^|\\.)(x|twitter)\\.com$/i.test(location.hostname);\n  let REC = [];\n  let IS_REC = false;\n  let HAS_SESSION = false;\n  let UI_CLOSED = false;\n  let DEBUG_LOGS = [];\n  let _scanInterval = null;\n  let _lastSubmitTs = 0;\n\n  const BLACKLIST = /^(postingan|galeri|konten|photos|foto|video|reels|story|tentang|about|friends|teman|following|mengikuti|followers|pengikut|likes|suka|komentar|comment|ulasan|review|check.?in|kunjungan|perkenalan|intro|event|acara|services|layanan|shop|toko|groups|grup|halaman|pages|menu|lihat semua|see all|see more|lihat selengkapnya|lihat info|postingan terbaru|recent posts|sematkan|pinned|boost post|boost|insight|see insights|dasbor profesional|perencana|monetisasi|professional dashboard|planner|monetization|notifications|notifikasi|messages|pesan|search|pencarian|home|beranda|watch|marketplace|gaming|menu utama|pusat iklan|buat iklan|create ad|ad center|admin|pengaturan|settings|keluar|logout|edit profil|edit profile|lihat sebagai|view as|konten profil halaman|page profile content|profile content|lihat konten)$/i;\n\n  const SUBMIT_RE = /^(berikutnya|next|lanjut|selanjutnya|post|posting|bagikan|share|kirim|publish|posting sekarang|post now)$/i;\n\n  const COMPOSER_EXACT = /^(buat postingan|create a post|create post|write something|tulis sesuatu|tulis postingan|mulai diskusi|start a discussion)\\.{0,3}$/i;\n  const COMPOSER_CONTAINS = /what.*on your mind|apa yang (anda|kamu) pikirkan|buat postingan|pikirkan sekarang|mulai posting|write something|tulis sesuatu|tulis postingan|tulis status|mulai diskusi|start a discussion/i;\n  const COMPOSER_PREFIX = /^(apa yang (?:anda|kamu) pikirkan|what'?s on your mind|what on your mind|buat postingan|create a post|create post|write something|tulis sesuatu|tulis postingan|tulis status|mulai diskusi|start a discussion)/i;\n\n  const CLICKABLE = '[role=\"button\"],button,a,[role=\"link\"],[role=\"menuitem\"],[role=\"tab\"]';\n\n  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;'); }\n\n  function copyToClipboard(text, successMsg){\n    if(navigator.clipboard && navigator.clipboard.writeText){\n      navigator.clipboard.writeText(text).then(() => { if(successMsg) alert(successMsg); }).catch(() => fallbackCopy(text, successMsg));\n    } else fallbackCopy(text, successMsg);\n  }\n  function fallbackCopy(text, successMsg){\n    try {\n      const ta = document.createElement('textarea'); ta.value = text;\n      ta.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;opacity:0.01;padding:0;border:0;';\n      ta.setAttribute('readonly', ''); document.body.appendChild(ta);\n      ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);\n      const ok = document.execCommand('copy'); document.body.removeChild(ta);\n      if(ok){ if(successMsg) alert(successMsg); return true; }\n      throw new Error('execCommand copy false');\n    } catch(e){ manualCopyPrompt(text); return false; }\n  }\n  function manualCopyPrompt(text){\n    try {\n      const old = document.getElementById('jhon-copymodal'); if(old) old.remove();\n      const modal = document.createElement('div'); modal.id = 'jhon-copymodal';\n      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:20px;';\n      const box = document.createElement('div'); box.style.cssText = 'max-width:600px;width:100%;background:#1a1a1a;border:2px solid #0ea5e9;border-radius:12px;padding:15px;color:#fff;font-family:monospace;';\n      const title = document.createElement('div'); title.style.cssText = 'font-size:13px;font-weight:bold;margin-bottom:10px;'; title.textContent = '📋 Copy Manual';\n      const ta = document.createElement('textarea'); ta.value = text; ta.readOnly = true;\n      ta.style.cssText = 'width:100%;height:300px;background:#000;color:#0ea5e9;border:1px solid #333;border-radius:6px;padding:8px;font-family:monospace;font-size:11px;';\n      const btnRow = document.createElement('div'); btnRow.style.cssText = 'display:flex;gap:8px;margin-top:10px;';\n      const selectBtn = document.createElement('button'); selectBtn.textContent = '📝 Select All';\n      selectBtn.style.cssText = 'flex:1;padding:10px;background:#0ea5e9;color:#fff;border:0;border-radius:6px;font-weight:bold;cursor:pointer;';\n      selectBtn.onclick = () => { ta.focus(); ta.select(); };\n      const closeBtn = document.createElement('button'); closeBtn.textContent = '❌ Close';\n      closeBtn.style.cssText = 'padding:10px 15px;background:#7f1d1d;color:#fff;border:0;border-radius:6px;font-weight:bold;cursor:pointer;';\n      closeBtn.onclick = () => modal.remove();\n      btnRow.appendChild(selectBtn); btnRow.appendChild(closeBtn);\n      box.appendChild(title); box.appendChild(ta); box.appendChild(btnRow);\n      modal.appendChild(box); document.body.appendChild(modal);\n      setTimeout(() => { ta.focus(); ta.select(); }, 100);\n    } catch(e){ window.prompt('Copy manual:', text); }\n  }\n  function dbg(msg, type){\n    const t = new Date().toLocaleTimeString().slice(0,8);\n    const icon = type === 'match' ? '✅' : type === 'skip' ? '⏭️' : type === 'warn' ? '⚠️' : type === 'click' ? '👆' : type === 'type' ? '⌨️' : 'ℹ️';\n    const line = '[' + t + '] ' + icon + ' ' + msg;\n    DEBUG_LOGS.push(line); if(DEBUG_LOGS.length > 100) DEBUG_LOGS.shift();\n    renderDebugLog(); console.log('[JHON REC]', line);\n  }\n  function renderDebugLog(){\n    const el = document.getElementById('rec-debuglog');\n    if(el){ el.innerHTML = DEBUG_LOGS.slice(-40).map(l => '<div>' + esc(l) + '<\\/div>').join(''); el.scrollTop = el.scrollHeight; }\n  }\n  function renderSteps(){\n    const el = document.getElementById('rec-steps'); if(!el) return;\n    if(!REC.length){ el.innerHTML = '<div style=\"color:#555\">— belum ada step —<\\/div>'; return; }\n    el.innerHTML = REC.map((s, i) => {\n      let label = s.type;\n      if(s.selector === 'POST_BUTTON_REAL') label += ' → 🎯 POST_BUTTON_REAL';\n      else if(s.type === 'TYPE') label += ' → ⌨️ POST_CONTENT';\n      else label += ' → ' + (s.text ? 'TEXT:' + s.text : (s.selector || '')).slice(0, 50);\n      const color = s.type === 'TYPE' ? '#10b981' : s.selector === 'POST_BUTTON_REAL' ? '#f59e0b' : '#0ea5e9';\n      return '<div style=\"color:' + color + '\"><b>' + (i+1) + '.<\\/b> ' + esc(label) + '<\\/div>';\n    }).join('');\n  }\n  function updateCount(){ const el = document.getElementById('rec-count'); if(el) el.textContent = REC.length + ' step'; }\n  function addTypeStep(reason, inDialog){\n    const last = REC[REC.length - 1];\n    if(last && last.type === 'TYPE'){ dbg('TYPE sudah ada, skip', 'skip'); return false; }\n    const selector = IS_X ? '[data-testid=\"tweetTextarea_0\"]' : 'div[contenteditable=\"true\"][role=\"textbox\"], div[contenteditable=\"plaintext-only\"][role=\"textbox\"]';\n    REC.push({ type: 'TYPE', selector: selector, value: 'POST_CONTENT', url: '', autoRemoveLink: false, previewWait: 3 });\n    dbg('MATCH TYPE → POST_CONTENT (' + reason + ')', 'match');\n    renderSteps(); updateCount();\n    return true;\n  }\n  function isCommentSection(el){\n    let cur = el;\n    for(let i = 0; i < 12 && cur; i++){\n      if(!cur.getAttribute){ cur = cur.parentElement; continue; }\n      const al = (cur.getAttribute('aria-label') || '').toLowerCase();\n      const cls = (typeof cur.className === 'string' ? cur.className : '').toLowerCase();\n      if(/comment|komentar|reply|balas|write a comment|tulis komentar|beri komentar/i.test(al)) return true;\n      if(/comment|komentar|reply/i.test(cls)) return true;\n      cur = cur.parentElement;\n    }\n    return false;\n  }\n  function setRecUI(){\n    const d = document.getElementById('jhon-rec'); if(!d) return;\n    const st = d.querySelector('#rec-status');\n    const btn = d.querySelector('#rec-start');\n    if(st){ st.textContent = IS_REC ? '🔴 MEREKAM...' : (HAS_SESSION ? '⏸ Pause' : 'Siap'); st.style.color = IS_REC ? '#ef4444' : '#0ea5e9'; }\n    if(btn){ btn.textContent = IS_REC ? '⏸ PAUSE' : (HAS_SESSION ? '▶ LANJUT' : '▶ MULAI REKAM'); btn.style.background = IS_REC ? '#7f1d1d' : '#f59e0b'; btn.style.color = IS_REC ? '#fff' : '#000'; }\n  }\n  function makeUI(){\n    if(UI_CLOSED) return;\n    if(document.getElementById('jhon-rec')) return;\n    if(!document.body) return;\n    const d = document.createElement('div');\n    d.id = 'jhon-rec';\n    d.style.cssText = 'position:fixed;left:12px;top:80px;z-index:2147483646;background:#141414;border:2px solid #f59e0b;border-radius:12px;width:380px;max-width:calc(100vw - 24px);color:#fff;font-family:monospace;font-size:11px;box-shadow:0 4px 20px rgba(0,0,0,.6);';\n    d.innerHTML = '<div id=\"rec-header\" style=\"padding:8px 10px;background:#1a1a1a;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;cursor:grab;user-select:none;touch-action:none\"><b style=\"font-size:11px\">🔴 JHON REC v3.10<\\/b><span id=\"rec-count\" style=\"font-size:10px;color:#f59e0b\">0 step<\\/span><\\/div><div style=\"padding:10px\"><div style=\"font-size:10px;color:#aaa;margin-bottom:6px\">Status: <b id=\"rec-status\" style=\"color:#0ea5e9\">Siap<\\/b><\\/div><div style=\"font-size:9px;color:#888;margin-top:6px\">📋 STEPS:<\\/div><div id=\"rec-steps\" style=\"font-size:9px;color:#7dd3fc;max-height:90px;overflow:auto;background:#0a0a0a;padding:6px;border-radius:6px;font-family:monospace;margin-top:3px\">— belum ada step —<\\/div><div style=\"font-size:9px;color:#888;margin-top:6px\">🐛 DEBUG LOG:<\\/div><div id=\"rec-debuglog\" style=\"font-size:9px;color:#888;max-height:180px;overflow:auto;background:#000;padding:6px;border-radius:6px;font-family:monospace;line-height:1.4;margin-top:3px\">— log —<\\/div><div style=\"display:flex;gap:4px;margin-top:8px\"><button id=\"rec-start\" style=\"flex:1;padding:8px;background:#f59e0b;color:#000;border:0;border-radius:6px;font-weight:800;cursor:pointer;font-size:11px\">▶ MULAI REKAM<\\/button><button id=\"rec-stop\" style=\"flex:1;padding:8px;background:#0ea5e9;color:#fff;border:0;border-radius:6px;font-weight:800;cursor:pointer;font-size:11px\">⏹ STOP & COPY<\\/button><\\/div><div style=\"display:flex;gap:4px;margin-top:4px\"><button id=\"rec-clear\" style=\"flex:1;padding:5px;background:#222;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">🗑️ Clear<\\/button><button id=\"rec-copy\" style=\"flex:1;padding:5px;background:#0ea5e9;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">📋 Copy JSON<\\/button><button id=\"rec-copylog\" style=\"flex:1;padding:5px;background:#7c3aed;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">📄 Copy Debug<\\/button><button id=\"rec-close\" style=\"padding:5px 8px;background:#222;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">X<\\/button><\\/div><\\/div>';\n    document.body.appendChild(d);\n    (function(){\n      const head = d.querySelector('#rec-header');\n      let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;\n      head.addEventListener('pointerdown', function(e){\n        if(e.target.tagName === 'BUTTON') return;\n        dragging = true; sx = e.clientX; sy = e.clientY;\n        const r = d.getBoundingClientRect(); sl = r.left; st = r.top;\n        try { head.setPointerCapture(e.pointerId); } catch(_){}\n        e.preventDefault();\n      });\n      head.addEventListener('pointermove', function(e){\n        if(!dragging) return;\n        d.style.left = (sl + e.clientX - sx) + 'px';\n        d.style.top = (st + e.clientY - sy) + 'px';\n        d.style.right = 'auto'; d.style.bottom = 'auto';\n      });\n      function endDrag(e){\n        if(!dragging) return;\n        dragging = false;\n        try { head.releasePointerCapture(e.pointerId); } catch(_){}\n      }\n      head.addEventListener('pointerup', endDrag);\n      head.addEventListener('pointercancel', endDrag);\n    })();\n    d.querySelector('#rec-close').onclick = () => { UI_CLOSED = true; IS_REC = false; if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } d.remove(); };\n    d.querySelector('#rec-clear').onclick = () => { REC = []; DEBUG_LOGS = []; HAS_SESSION = false; IS_REC = false; if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } renderSteps(); renderDebugLog(); updateCount(); setRecUI(); dbg('Cleared'); };\n    d.querySelector('#rec-start').onclick = () => {\n      IS_REC = !IS_REC;\n      if(IS_REC){\n        if(!HAS_SESSION){ REC = []; DEBUG_LOGS = []; HAS_SESSION = true; renderSteps(); updateCount(); dbg('🔴 Mulai rekam'); }\n        else dbg('▶ Lanjut rekam');\n        startScan();\n      } else { dbg('⏸ Pause'); if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } }\n      setRecUI();\n    };\n    d.querySelector('#rec-stop').onclick = () => { IS_REC = false; HAS_SESSION = false; if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } setRecUI(); dbg('⏹ STOP. Total: ' + REC.length + ' step'); if(REC.length === 0){ alert('Belum ada!'); return; } copyJSON(); };\n    d.querySelector('#rec-copy').onclick = () => { if(REC.length === 0){ alert('Belum ada!'); return; } copyJSON(); };\n    d.querySelector('#rec-copylog').onclick = () => { const text = '=== DEBUG LOG ===\\n' + DEBUG_LOGS.join('\\n') + '\\n\\n=== RECORDED STEPS (' + REC.length + ') ===\\n' + JSON.stringify(REC, null, 2); copyToClipboard(text, '✅ Debug ter-copy!'); };\n    renderSteps(); renderDebugLog(); updateCount(); setRecUI();\n  }\n  function copyJSON(){ const json = JSON.stringify(REC, null, 2); copyToClipboard(json, '✅ JSON (' + REC.length + ' step) ter-copy!'); }\n\n  function findParentClickable(el, maxDepth){\n    maxDepth = maxDepth || 10;\n    let p = el;\n    for(let i = 0; i < maxDepth && p; i++){\n      const role = (p.getAttribute && p.getAttribute('role') || '').toLowerCase();\n      const tab = p.getAttribute && p.getAttribute('tabindex');\n      if(role === 'button' || tab === '0') return p;\n      p = p.parentElement;\n    }\n    return null;\n  }\n\n  function recordClick(e){\n    if(!IS_REC) return;\n    if(!e.target || !e.target.closest) return;\n    if(e.target.closest('#jhon-rec, [id^=\"jhon-\"]')) return;\n    const t = e.target.closest(CLICKABLE) || e.target;\n    const txt = (t.textContent || '').trim();\n    const txtL = txt.toLowerCase();\n    const tag = t.tagName;\n    const rect = t.getBoundingClientRect();\n    const size = Math.round(rect.width) + 'x' + Math.round(rect.height);\n    const selfAria = (t.getAttribute('aria-label') || '').trim();\n    const ariaL = selfAria.toLowerCase();\n    dbg('CLICK: tag=' + tag + ' size=' + size + ' | txt=\"' + txt.slice(0, 30) + '\" | aria=\"' + selfAria.slice(0, 30) + '\"', 'click');\n\n    if(IS_X){\n      const sub = e.target.closest('[data-testid=\"tweetButton\"], [data-testid=\"tweetButtonInline\"]');\n      if(sub){\n        if(!REC.some(s => s.type === 'TYPE')){\n          const xe = document.querySelector('[data-testid=\"tweetTextarea_0\"]');\n          if(xe && (xe.textContent || '').trim().length > 5){ dbg('AUTO TYPE dari composer', 'warn'); addTypeStep('pre-post scan', true); }\n          else { dbg('SKIP Post (composer kosong)', 'skip'); return; }\n        }\n        const nowX = Date.now();\n        if(nowX - _lastSubmitTs < 800){ dbg('SKIP dup submit', 'skip'); return; }\n        _lastSubmitTs = nowX;\n        REC.push({ type: 'CLICK', selector: 'POST_BUTTON_REAL', value: '', url: '' });\n        dbg('MATCH Post X', 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      const op = e.target.closest('[data-testid=\"SideNav_NewTweet_Button\"], [data-testid=\"FloatingActionButtons_Tweet_Button\"]');\n      if(op){\n        const lastX = REC[REC.length - 1];\n        const selX = '[data-testid=\"SideNav_NewTweet_Button\"], [data-testid=\"FloatingActionButtons_Tweet_Button\"]';\n        if(lastX && lastX.type === 'CLICK' && lastX.selector === selX){ dbg('SKIP dup', 'skip'); return; }\n        REC.push({ type: 'CLICK', selector: selX, value: '', url: '' });\n        dbg('Rekam buka composer X', 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      dbg('SKIP klik X lain', 'skip');\n      return;\n    }\n\n    const navRe = /konten profil halaman|page profile content|profile content|lihat konten/i;\n    if(navRe.test(txtL) || navRe.test(ariaL)){ dbg('SKIP nav', 'skip'); return; }\n\n    if(SUBMIT_RE.test(txtL) || SUBMIT_RE.test(ariaL)){\n      const inComposer = !!t.closest('div[role=\"dialog\"], form, [role=\"main\"]') || REC.some(s => s.type === 'TYPE');\n      if(!inComposer){ dbg('SKIP submit', 'skip'); return; }\n      const now = Date.now();\n      if(now - _lastSubmitTs < 800){ dbg('SKIP dup submit', 'skip'); return; }\n      _lastSubmitTs = now;\n      REC.push({ type: 'CLICK', selector: 'POST_BUTTON_REAL', value: '', url: '' });\n      dbg('MATCH submit → POST_BUTTON_REAL', 'match');\n      renderSteps(); updateCount();\n      return;\n    }\n\n    if(COMPOSER_EXACT.test(selfAria) || COMPOSER_EXACT.test(txtL) || COMPOSER_CONTAINS.test(txtL) || COMPOSER_CONTAINS.test(selfAria)){\n      const parentClickable = findParentClickable(t, 10);\n      const parentAria = parentClickable ? (parentClickable.getAttribute('aria-label') || '').trim() : '';\n      let useAria = parentAria || selfAria;\n      if(useAria){\n        const m = useAria.match(COMPOSER_PREFIX);\n        const sel = m ? '[aria-label^=\"' + m[1].replace(/\"/g, '\\\\\"') + '\"]' : '[aria-label=\"' + useAria.replace(/\"/g, '\\\\\"') + '\"]';\n        REC.push({ type: 'CLICK', selector: sel, value: '', url: '' });\n        dbg('Rekam buka composer (aria): ' + sel.slice(0, 60), 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      const label = txt.slice(0, 60);\n      if(parentClickable){\n        REC.push({ type: 'CLICK', selector: '[role=\"button\"]', text: label, value: '', url: '' });\n        dbg('Rekam buka composer (role=button + text): \"' + label + '\"', 'match');\n      } else {\n        REC.push({ type: 'CLICK', selector: 'div,span', text: label, value: '', url: '' });\n        dbg('Rekam buka composer (teks): \"' + label + '\"', 'match');\n      }\n      renderSteps(); updateCount();\n      return;\n    }\n\n    if(BLACKLIST.test(txtL) || BLACKLIST.test(ariaL)){ dbg('SKIP blacklist', 'skip'); return; }\n    if(tag === 'DIV' || tag === 'SPAN' || tag === 'BODY' || tag === 'HTML'){ if(!selfAria){ dbg('SKIP generic', 'skip'); return; } }\n    let sel = '';\n    if(selfAria){ sel = '[aria-label=\"' + selfAria.replace(/\"/g, '\\\\\"') + '\"]'; }\n    else { sel = tag.toLowerCase(); if(t.id) sel += '#' + t.id; }\n    if(sel === 'div' || sel === 'span' || sel === 'button' || sel === 'a' || sel.length < 5){ dbg('SKIP generic sel', 'skip'); return; }\n    if(txtL.length > 60){ dbg('SKIP text >60', 'skip'); return; }\n    REC.push({ type: 'CLICK', selector: sel, value: '', url: '' });\n    dbg('Rekam CLICK', 'match');\n    renderSteps(); updateCount();\n  }\n\n  function tryRecordType(source, e){\n    if(!IS_REC) return;\n    const target = e.target;\n    if(!target || !target.closest || target.closest('#jhon-rec, [id^=\"jhon-\"]')) return;\n    const editableEl = target.closest('[contenteditable=\"true\"], [contenteditable=\"plaintext-only\"]');\n    const tag = target.tagName;\n    const isField = !!editableEl || tag === 'TEXTAREA' || tag === 'INPUT';\n    if(!isField) return;\n    if(IS_X){\n      if(target.closest('[data-testid=\"tweetTextarea_0\"]')) addTypeStep('x:' + source, true);\n      else dbg('SKIP TYPE (bukan composer X)', 'skip');\n      return;\n    }\n    const el = editableEl || target;\n    const role = (el.getAttribute('role') || '').toLowerCase();\n    const type = (el.getAttribute('type') || '').toLowerCase();\n    if(type === 'search' || role === 'searchbox' || role === 'combobox'){ dbg('SKIP TYPE search', 'skip'); return; }\n    if(isCommentSection(target)){ dbg('SKIP TYPE comment', 'skip'); return; }\n    const inDialog = !!target.closest('div[role=\"dialog\"]');\n    const isInlineComposer = !inDialog && role === 'textbox' && el.offsetParent !== null && el.getBoundingClientRect().width > 100;\n    dbg('[' + source + '] tag=' + tag + ' role=' + role + ' dialog=' + inDialog + ' inline=' + isInlineComposer, (inDialog || isInlineComposer) ? 'type' : 'skip');\n    if(!inDialog && !isInlineComposer){ dbg('SKIP TYPE (bukan composer)', 'skip'); return; }\n    addTypeStep(source, inDialog || isInlineComposer);\n  }\n\n  function handleInput(e){ tryRecordType('input', e); }\n  function handleBeforeInput(e){ tryRecordType('beforeinput', e); }\n  function handleKeydown(e){ if(!e.key || e.key.length > 1) return; if(e.ctrlKey || e.metaKey || e.altKey) return; tryRecordType('keydown:' + e.key, e); }\n  function handlePaste(e){ tryRecordType('paste', e); }\n\n  function startScan(){\n    if(_scanInterval) clearInterval(_scanInterval);\n    _scanInterval = setInterval(() => {\n      if(!IS_REC) return;\n      const last = REC[REC.length - 1];\n      if(last && last.type === 'TYPE') return;\n      if(IS_X){\n        const xe = document.querySelector('[data-testid=\"tweetTextarea_0\"]');\n        if(xe && (xe.textContent || '').trim().length > 5) addTypeStep('scan', true);\n        return;\n      }\n      const dlg = document.querySelector('div[role=\"dialog\"]');\n      if(dlg && dlg.offsetParent !== null){\n        const editables = dlg.querySelectorAll('div[contenteditable=\"true\"][role=\"textbox\"], div[contenteditable=\"plaintext-only\"][role=\"textbox\"], textarea');\n        for(const ed of editables){\n          if(ed.offsetParent === null) continue;\n          const txt = (ed.textContent || ed.value || '').trim();\n          if(txt.length > 5){ addTypeStep('scan', true); return; }\n        }\n      }\n      const inlines = document.querySelectorAll('div[contenteditable=\"true\"][role=\"textbox\"], div[contenteditable=\"plaintext-only\"][role=\"textbox\"]');\n      for(const ed of inlines){\n        if(ed.offsetParent === null) continue;\n        if(isCommentSection(ed)) continue;\n        const r = ed.getBoundingClientRect(); if(r.width < 100) continue;\n        const txt = (ed.textContent || '').trim();\n        if(txt.length > 5){ addTypeStep('scan', false); return; }\n      }\n    }, 1500);\n  }\n\n  window._jhonDebug = function(){ const text = '=== DEBUG LOG ===\\n' + DEBUG_LOGS.join('\\n') + '\\n\\n=== RECORDED STEPS (' + REC.length + ') ===\\n' + JSON.stringify(REC, null, 2); console.log(text); return text; };\n  window._jhonRec = function(){ return REC; };\n  window._jhonLogs = function(){ return DEBUG_LOGS; };\n\n  document.addEventListener('click', recordClick, true);\n  document.addEventListener('input', handleInput, true);\n  document.addEventListener('beforeinput', handleBeforeInput, true);\n  document.addEventListener('keydown', handleKeydown, true);\n  document.addEventListener('paste', handlePaste, true);\n  document.addEventListener('drop', handlePaste, true);\n\n  function ensureUI(){ try { makeUI(); } catch(e){ console.error('[JHON REC] UI error:', e); } }\n  ensureUI();\n  [300, 800, 1500, 3000, 5000].forEach(t => setTimeout(ensureUI, t));\n  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureUI);\n  window.addEventListener('load', ensureUI);\n  try {\n    const mo = new MutationObserver(() => { if(!UI_CLOSED && !document.getElementById('jhon-rec')) ensureUI(); });\n    const startMO = () => { if(document.body) mo.observe(document.body, { childList: true }); };\n    if(document.body) startMO(); else document.addEventListener('DOMContentLoaded', startMO);\n  } catch(e){}\n  console.log('[JHON RECORDER v3.10] Loaded');\n})();\n";
-
+const RECORDER_SOURCE = "// ==UserScript==\n// @name         JHON RECORDER v3.11\n// @namespace    jhon-recorder\n// @version      3.11\n// @description  Rekam klik & ketik FB (feed/page/grup/profile) + X + Schedule picker\n// @author       JHON\n// @match        *://*.facebook.com/*\n// @match        *://x.com/*\n// @match        *://*.x.com/*\n// @match        *://twitter.com/*\n// @match        *://*.twitter.com/*\n// @grant        none\n// @run-at       document-idle\n// ==/UserScript==\n\n(function(){\n  'use strict';\n\n  const IS_X = /(^|\\.)(x|twitter)\\.com$/i.test(location.hostname);\n  let REC = [];\n  let IS_REC = false;\n  let HAS_SESSION = false;\n  let UI_CLOSED = false;\n  let DEBUG_LOGS = [];\n  let _scanInterval = null;\n  let _lastSubmitTs = 0;\n\n  const BLACKLIST = /^(postingan|galeri|konten|photos|foto|video|reels|story|tentang|about|friends|teman|following|mengikuti|followers|pengikut|likes|suka|komentar|comment|ulasan|review|check.?in|kunjungan|perkenalan|intro|event|acara|services|layanan|shop|toko|groups|grup|halaman|pages|menu|lihat semua|see all|see more|lihat selengkapnya|lihat info|postingan terbaru|recent posts|sematkan|pinned|boost post|boost|insight|see insights|dasbor profesional|perencana|monetisasi|professional dashboard|planner|monetization|notifications|notifikasi|messages|pesan|search|pencarian|home|beranda|watch|marketplace|gaming|menu utama|pusat iklan|buat iklan|create ad|ad center|admin|pengaturan|settings|keluar|logout|edit profil|edit profile|lihat sebagai|view as|konten profil halaman|page profile content|profile content|lihat konten)$/i;\n\n  const SUBMIT_RE = /^(berikutnya|next|lanjut|selanjutnya|post|posting|bagikan|share|kirim|publish|posting sekarang|post now)$/i;\n\n  const COMPOSER_EXACT = /^(buat postingan|create a post|create post|write something|tulis sesuatu|tulis postingan|mulai diskusi|start a discussion)\\.{0,3}$/i;\n  const COMPOSER_CONTAINS = /what.*on your mind|apa yang (anda|kamu) pikirkan|buat postingan|pikirkan sekarang|mulai posting|write something|tulis sesuatu|tulis postingan|tulis status|mulai diskusi|start a discussion/i;\n  const COMPOSER_PREFIX = /^(apa yang (?:anda|kamu) pikirkan|what'?s on your mind|what on your mind|buat postingan|create a post|create post|write something|tulis sesuatu|tulis postingan|tulis status|mulai diskusi|start a discussion)/i;\n\n  const CLICKABLE = '[role=\"button\"],button,a,[role=\"link\"],[role=\"menuitem\"],[role=\"tab\"]';\n\n  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;'); }\n\n  function copyToClipboard(text, successMsg){\n    if(navigator.clipboard && navigator.clipboard.writeText){\n      navigator.clipboard.writeText(text).then(() => { if(successMsg) alert(successMsg); }).catch(() => fallbackCopy(text, successMsg));\n    } else fallbackCopy(text, successMsg);\n  }\n  function fallbackCopy(text, successMsg){\n    try {\n      const ta = document.createElement('textarea'); ta.value = text;\n      ta.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;opacity:0.01;padding:0;border:0;';\n      ta.setAttribute('readonly', ''); document.body.appendChild(ta);\n      ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);\n      const ok = document.execCommand('copy'); document.body.removeChild(ta);\n      if(ok){ if(successMsg) alert(successMsg); return true; }\n      throw new Error('execCommand copy false');\n    } catch(e){ manualCopyPrompt(text); return false; }\n  }\n  function manualCopyPrompt(text){\n    try {\n      const old = document.getElementById('jhon-copymodal'); if(old) old.remove();\n      const modal = document.createElement('div'); modal.id = 'jhon-copymodal';\n      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:20px;';\n      const box = document.createElement('div'); box.style.cssText = 'max-width:600px;width:100%;background:#1a1a1a;border:2px solid #0ea5e9;border-radius:12px;padding:15px;color:#fff;font-family:monospace;';\n      const title = document.createElement('div'); title.style.cssText = 'font-size:13px;font-weight:bold;margin-bottom:10px;'; title.textContent = '📋 Copy Manual';\n      const ta = document.createElement('textarea'); ta.value = text; ta.readOnly = true;\n      ta.style.cssText = 'width:100%;height:300px;background:#000;color:#0ea5e9;border:1px solid #333;border-radius:6px;padding:8px;font-family:monospace;font-size:11px;';\n      const btnRow = document.createElement('div'); btnRow.style.cssText = 'display:flex;gap:8px;margin-top:10px;';\n      const selectBtn = document.createElement('button'); selectBtn.textContent = '📝 Select All';\n      selectBtn.style.cssText = 'flex:1;padding:10px;background:#0ea5e9;color:#fff;border:0;border-radius:6px;font-weight:bold;cursor:pointer;';\n      selectBtn.onclick = () => { ta.focus(); ta.select(); };\n      const closeBtn = document.createElement('button'); closeBtn.textContent = '❌ Close';\n      closeBtn.style.cssText = 'padding:10px 15px;background:#7f1d1d;color:#fff;border:0;border-radius:6px;font-weight:bold;cursor:pointer;';\n      closeBtn.onclick = () => modal.remove();\n      btnRow.appendChild(selectBtn); btnRow.appendChild(closeBtn);\n      box.appendChild(title); box.appendChild(ta); box.appendChild(btnRow);\n      modal.appendChild(box); document.body.appendChild(modal);\n      setTimeout(() => { ta.focus(); ta.select(); }, 100);\n    } catch(e){ window.prompt('Copy manual:', text); }\n  }\n  function dbg(msg, type){\n    const t = new Date().toLocaleTimeString().slice(0,8);\n    const icon = type === 'match' ? '✅' : type === 'skip' ? '⏭️' : type === 'warn' ? '⚠️' : type === 'click' ? '👆' : type === 'type' ? '⌨️' : 'ℹ️';\n    const line = '[' + t + '] ' + icon + ' ' + msg;\n    DEBUG_LOGS.push(line); if(DEBUG_LOGS.length > 100) DEBUG_LOGS.shift();\n    renderDebugLog(); console.log('[JHON REC]', line);\n  }\n  function renderDebugLog(){\n    const el = document.getElementById('rec-debuglog');\n    if(el){ el.innerHTML = DEBUG_LOGS.slice(-40).map(l => '<div>' + esc(l) + '<\\/div>').join(''); el.scrollTop = el.scrollHeight; }\n  }\n  function renderSteps(){\n    const el = document.getElementById('rec-steps'); if(!el) return;\n    if(!REC.length){ el.innerHTML = '<div style=\"color:#555\">— belum ada step —<\\/div>'; return; }\n    el.innerHTML = REC.map((s, i) => {\n      let label = s.type;\n      if(s.selector === 'POST_BUTTON_REAL') label += ' → 🎯 POST_BUTTON_REAL';\n      else if(s.selector === 'X_CONFIRM_SCHEDULE') label += ' → 📅 Confirm';\n      else if(s.type === 'TYPE') label += ' → ⌨️ POST_CONTENT';\n      else if(s.type === 'SET_SELECT') label += ' → 📅 ' + s._kind + '=' + s._value;\n      else label += ' → ' + (s.text ? 'TEXT:' + s.text : (s.selector || '')).slice(0, 50);\n      const color = s.type === 'TYPE' ? '#10b981' : s.selector === 'POST_BUTTON_REAL' ? '#f59e0b' : s.type === 'SET_SELECT' ? '#a78bfa' : '#0ea5e9';\n      return '<div style=\"color:' + color + '\"><b>' + (i+1) + '.<\\/b> ' + esc(label) + '<\\/div>';\n    }).join('');\n  }\n  function updateCount(){ const el = document.getElementById('rec-count'); if(el) el.textContent = REC.length + ' step'; }\n  function addTypeStep(reason, inDialog){\n    const last = REC[REC.length - 1];\n    if(last && last.type === 'TYPE'){ dbg('TYPE sudah ada, skip', 'skip'); return false; }\n    const selector = IS_X ? '[data-testid=\"tweetTextarea_0\"]' : 'div[contenteditable=\"true\"][role=\"textbox\"], div[contenteditable=\"plaintext-only\"][role=\"textbox\"]';\n    REC.push({ type: 'TYPE', selector: selector, value: 'POST_CONTENT', url: '', autoRemoveLink: false, previewWait: 3 });\n    dbg('MATCH TYPE → POST_CONTENT (' + reason + ')', 'match');\n    renderSteps(); updateCount();\n    return true;\n  }\n  function isCommentSection(el){\n    let cur = el;\n    for(let i = 0; i < 12 && cur; i++){\n      if(!cur.getAttribute){ cur = cur.parentElement; continue; }\n      const al = (cur.getAttribute('aria-label') || '').toLowerCase();\n      const cls = (typeof cur.className === 'string' ? cur.className : '').toLowerCase();\n      if(/comment|komentar|reply|balas|write a comment|tulis komentar|beri komentar/i.test(al)) return true;\n      if(/comment|komentar|reply/i.test(cls)) return true;\n      cur = cur.parentElement;\n    }\n    return false;\n  }\n  function setRecUI(){\n    const d = document.getElementById('jhon-rec'); if(!d) return;\n    const st = d.querySelector('#rec-status');\n    const btn = d.querySelector('#rec-start');\n    if(st){ st.textContent = IS_REC ? '🔴 MEREKAM...' : (HAS_SESSION ? '⏸ Pause' : 'Siap'); st.style.color = IS_REC ? '#ef4444' : '#0ea5e9'; }\n    if(btn){ btn.textContent = IS_REC ? '⏸ PAUSE' : (HAS_SESSION ? '▶ LANJUT' : '▶ MULAI REKAM'); btn.style.background = IS_REC ? '#7f1d1d' : '#f59e0b'; btn.style.color = IS_REC ? '#fff' : '#000'; }\n  }\n  function makeUI(){\n    if(UI_CLOSED) return;\n    if(document.getElementById('jhon-rec')) return;\n    if(!document.body) return;\n    const d = document.createElement('div');\n    d.id = 'jhon-rec';\n    d.style.cssText = 'position:fixed;left:12px;top:80px;z-index:2147483646;background:#141414;border:2px solid #f59e0b;border-radius:12px;width:380px;max-width:calc(100vw - 24px);color:#fff;font-family:monospace;font-size:11px;box-shadow:0 4px 20px rgba(0,0,0,.6);';\n    d.innerHTML = '<div id=\"rec-header\" style=\"padding:8px 10px;background:#1a1a1a;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;cursor:grab;user-select:none;touch-action:none\"><b style=\"font-size:11px\">🔴 JHON REC v3.11<\\/b><span id=\"rec-count\" style=\"font-size:10px;color:#f59e0b\">0 step<\\/span><\\/div><div style=\"padding:10px\"><div style=\"font-size:10px;color:#aaa;margin-bottom:6px\">Status: <b id=\"rec-status\" style=\"color:#0ea5e9\">Siap<\\/b><\\/div><div style=\"font-size:9px;color:#888;margin-top:6px\">📋 STEPS:<\\/div><div id=\"rec-steps\" style=\"font-size:9px;color:#7dd3fc;max-height:90px;overflow:auto;background:#0a0a0a;padding:6px;border-radius:6px;font-family:monospace;margin-top:3px\">— belum ada step —<\\/div><div style=\"font-size:9px;color:#888;margin-top:6px\">🐛 DEBUG LOG:<\\/div><div id=\"rec-debuglog\" style=\"font-size:9px;color:#888;max-height:180px;overflow:auto;background:#000;padding:6px;border-radius:6px;font-family:monospace;line-height:1.4;margin-top:3px\">— log —<\\/div><div style=\"display:flex;gap:4px;margin-top:8px\"><button id=\"rec-start\" style=\"flex:1;padding:8px;background:#f59e0b;color:#000;border:0;border-radius:6px;font-weight:800;cursor:pointer;font-size:11px\">▶ MULAI REKAM<\\/button><button id=\"rec-stop\" style=\"flex:1;padding:8px;background:#0ea5e9;color:#fff;border:0;border-radius:6px;font-weight:800;cursor:pointer;font-size:11px\">⏹ STOP & COPY<\\/button><\\/div><div style=\"display:flex;gap:4px;margin-top:4px\"><button id=\"rec-clear\" style=\"flex:1;padding:5px;background:#222;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">🗑️ Clear<\\/button><button id=\"rec-copy\" style=\"flex:1;padding:5px;background:#0ea5e9;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">📋 Copy JSON<\\/button><button id=\"rec-copylog\" style=\"flex:1;padding:5px;background:#7c3aed;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">📄 Copy Debug<\\/button><button id=\"rec-close\" style=\"padding:5px 8px;background:#222;color:#fff;border:1px solid #333;border-radius:6px;font-size:10px;cursor:pointer\">X<\\/button><\\/div><\\/div>';\n    document.body.appendChild(d);\n    (function(){\n      const head = d.querySelector('#rec-header');\n      let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;\n      head.addEventListener('pointerdown', function(e){\n        if(e.target.tagName === 'BUTTON') return;\n        dragging = true; sx = e.clientX; sy = e.clientY;\n        const r = d.getBoundingClientRect(); sl = r.left; st = r.top;\n        try { head.setPointerCapture(e.pointerId); } catch(_){}\n        e.preventDefault();\n      });\n      head.addEventListener('pointermove', function(e){\n        if(!dragging) return;\n        d.style.left = (sl + e.clientX - sx) + 'px';\n        d.style.top = (st + e.clientY - sy) + 'px';\n        d.style.right = 'auto'; d.style.bottom = 'auto';\n      });\n      function endDrag(e){\n        if(!dragging) return;\n        dragging = false;\n        try { head.releasePointerCapture(e.pointerId); } catch(_){}\n      }\n      head.addEventListener('pointerup', endDrag);\n      head.addEventListener('pointercancel', endDrag);\n    })();\n    d.querySelector('#rec-close').onclick = () => { UI_CLOSED = true; IS_REC = false; if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } d.remove(); };\n    d.querySelector('#rec-clear').onclick = () => { REC = []; DEBUG_LOGS = []; HAS_SESSION = false; IS_REC = false; if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } renderSteps(); renderDebugLog(); updateCount(); setRecUI(); dbg('Cleared'); };\n    d.querySelector('#rec-start').onclick = () => {\n      IS_REC = !IS_REC;\n      if(IS_REC){\n        if(!HAS_SESSION){ REC = []; DEBUG_LOGS = []; HAS_SESSION = true; renderSteps(); updateCount(); dbg('🔴 Mulai rekam'); }\n        else dbg('▶ Lanjut rekam');\n        startScan();\n      } else { dbg('⏸ Pause'); if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } }\n      setRecUI();\n    };\n    d.querySelector('#rec-stop').onclick = () => { IS_REC = false; HAS_SESSION = false; if(_scanInterval){ clearInterval(_scanInterval); _scanInterval = null; } setRecUI(); dbg('⏹ STOP. Total: ' + REC.length + ' step'); if(REC.length === 0){ alert('Belum ada!'); return; } copyJSON(); };\n    d.querySelector('#rec-copy').onclick = () => { if(REC.length === 0){ alert('Belum ada!'); return; } copyJSON(); };\n    d.querySelector('#rec-copylog').onclick = () => { const text = '=== DEBUG LOG ===\\n' + DEBUG_LOGS.join('\\n') + '\\n\\n=== RECORDED STEPS (' + REC.length + ') ===\\n' + JSON.stringify(REC, null, 2); copyToClipboard(text, '✅ Debug ter-copy!'); };\n    renderSteps(); renderDebugLog(); updateCount(); setRecUI();\n  }\n  function copyJSON(){ const json = JSON.stringify(REC, null, 2); copyToClipboard(json, '✅ JSON (' + REC.length + ' step) ter-copy!'); }\n\n  function findParentClickable(el, maxDepth){\n    maxDepth = maxDepth || 10;\n    let p = el;\n    for(let i = 0; i < maxDepth && p; i++){\n      const role = (p.getAttribute && p.getAttribute('role') || '').toLowerCase();\n      const tab = p.getAttribute && p.getAttribute('tabindex');\n      if(role === 'button' || tab === '0') return p;\n      p = p.parentElement;\n    }\n    return null;\n  }\n\n  function recordClick(e){\n    if(!IS_REC) return;\n    if(!e.target || !e.target.closest) return;\n    if(e.target.closest('#jhon-rec, [id^=\"jhon-\"]')) return;\n    const t = e.target.closest(CLICKABLE) || e.target;\n    const txt = (t.textContent || '').trim();\n    const txtL = txt.toLowerCase();\n    const tag = t.tagName;\n    const rect = t.getBoundingClientRect();\n    const size = Math.round(rect.width) + 'x' + Math.round(rect.height);\n    const selfAria = (t.getAttribute('aria-label') || '').trim();\n    const ariaL = selfAria.toLowerCase();\n    dbg('CLICK: tag=' + tag + ' size=' + size + ' | txt=\"' + txt.slice(0, 30) + '\" | aria=\"' + selfAria.slice(0, 30) + '\"', 'click');\n\n    if(IS_X){\n      const sub = e.target.closest('[data-testid=\"tweetButton\"], [data-testid=\"tweetButtonInline\"]');\n      if(sub){\n        if(!REC.some(s => s.type === 'TYPE')){\n          const xe = document.querySelector('[data-testid=\"tweetTextarea_0\"]');\n          if(xe && (xe.textContent || '').trim().length > 5){ dbg('AUTO TYPE dari composer', 'warn'); addTypeStep('pre-post scan', true); }\n          else { dbg('SKIP Post (composer kosong)', 'skip'); return; }\n        }\n        const nowX = Date.now();\n        if(nowX - _lastSubmitTs < 800){ dbg('SKIP dup submit', 'skip'); return; }\n        _lastSubmitTs = nowX;\n        REC.push({ type: 'CLICK', selector: 'POST_BUTTON_REAL', value: '', url: '' });\n        dbg('MATCH Post X', 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      const op = e.target.closest('[data-testid=\"SideNav_NewTweet_Button\"], [data-testid=\"FloatingActionButtons_Tweet_Button\"]');\n      if(op){\n        const lastX = REC[REC.length - 1];\n        const selX = '[data-testid=\"SideNav_NewTweet_Button\"], [data-testid=\"FloatingActionButtons_Tweet_Button\"]';\n        if(lastX && lastX.type === 'CLICK' && lastX.selector === selX){ dbg('SKIP dup', 'skip'); return; }\n        REC.push({ type: 'CLICK', selector: selX, value: '', url: '' });\n        dbg('Rekam buka composer X', 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      const schedIco = e.target.closest('[aria-label=\"Schedule post\"], [aria-label=\"Jadwalkan postingan\"]');\n      if(schedIco){\n        const selS = '[aria-label=\"Schedule post\"], [aria-label=\"Jadwalkan postingan\"]';\n        const lastS = REC[REC.length - 1];\n        if(!(lastS && lastS.type === 'CLICK' && lastS.selector === selS)){\n          REC.push({ type: 'CLICK', selector: selS, value: '', url: '' });\n          dbg('Rekam buka Schedule picker', 'match');\n          renderSteps(); updateCount();\n        }\n        return;\n      }\n      if(tag === 'SELECT' && t.closest('div[role=\"dialog\"]')){\n        const opts = Array.from(t.options || []);\n        const n = opts.length;\n        const first = (opts[0] && opts[0].textContent || '').trim();\n        let kind = 'unknown';\n        if(n === 12 && /^(january|february|march|april|may|june|july|august|september|october|november|december|januari|februari|maret|mei|agustus|oktober|desember)$/i.test(first)) kind = 'month';\n        else if(n >= 28 && n <= 31 && /^\\d{1,2}$/.test(first)) kind = 'day';\n        else if(n <= 12 && /^20\\d{2}$/.test(first)) kind = 'year';\n        else if(n === 24) kind = 'hour';\n        else if(n === 60) kind = 'minute';\n        else if(n === 12) kind = 'hour12';\n        if(kind === 'unknown'){ dbg('SKIP SELECT unknown n=' + n, 'skip'); return; }\n        REC.push({ type: 'SET_SELECT', selector: 'X_SCHEDULE_SELECT', value: '', url: '', _kind: kind, _value: t.value, _text: (opts[t.selectedIndex] && opts[t.selectedIndex].textContent || '').trim() });\n        dbg('Rekam SET_SELECT ' + kind + ' = ' + t.value, 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      if(/^(confirm|konfirmasi)$/.test(txtL) && t.closest('div[role=\"dialog\"]')){\n        REC.push({ type: 'CLICK', selector: 'X_CONFIRM_SCHEDULE', value: '', url: '' });\n        dbg('Rekam Confirm schedule', 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      dbg('SKIP klik X lain', 'skip');\n      return;\n    }\n\n    const navRe = /konten profil halaman|page profile content|profile content|lihat konten/i;\n    if(navRe.test(txtL) || navRe.test(ariaL)){ dbg('SKIP nav', 'skip'); return; }\n\n    if(SUBMIT_RE.test(txtL) || SUBMIT_RE.test(ariaL)){\n      const inComposer = !!t.closest('div[role=\"dialog\"], form, [role=\"main\"]') || REC.some(s => s.type === 'TYPE');\n      if(!inComposer){ dbg('SKIP submit', 'skip'); return; }\n      const now = Date.now();\n      if(now - _lastSubmitTs < 800){ dbg('SKIP dup submit', 'skip'); return; }\n      _lastSubmitTs = now;\n      REC.push({ type: 'CLICK', selector: 'POST_BUTTON_REAL', value: '', url: '' });\n      dbg('MATCH submit → POST_BUTTON_REAL', 'match');\n      renderSteps(); updateCount();\n      return;\n    }\n\n    if(COMPOSER_EXACT.test(selfAria) || COMPOSER_EXACT.test(txtL) || COMPOSER_CONTAINS.test(txtL) || COMPOSER_CONTAINS.test(selfAria)){\n      const parentClickable = findParentClickable(t, 10);\n      const parentAria = parentClickable ? (parentClickable.getAttribute('aria-label') || '').trim() : '';\n      let useAria = parentAria || selfAria;\n      if(useAria){\n        const m = useAria.match(COMPOSER_PREFIX);\n        const sel = m ? '[aria-label^=\"' + m[1].replace(/\"/g, '\\\\\"') + '\"]' : '[aria-label=\"' + useAria.replace(/\"/g, '\\\\\"') + '\"]';\n        REC.push({ type: 'CLICK', selector: sel, value: '', url: '' });\n        dbg('Rekam buka composer (aria): ' + sel.slice(0, 60), 'match');\n        renderSteps(); updateCount();\n        return;\n      }\n      const label = txt.slice(0, 60);\n      if(parentClickable){\n        REC.push({ type: 'CLICK', selector: '[role=\"button\"]', text: label, value: '', url: '' });\n        dbg('Rekam buka composer (role=button + text): \"' + label + '\"', 'match');\n      } else {\n        REC.push({ type: 'CLICK', selector: 'div,span', text: label, value: '', url: '' });\n        dbg('Rekam buka composer (teks): \"' + label + '\"', 'match');\n      }\n      renderSteps(); updateCount();\n      return;\n    }\n\n    if(BLACKLIST.test(txtL) || BLACKLIST.test(ariaL)){ dbg('SKIP blacklist', 'skip'); return; }\n    if(tag === 'DIV' || tag === 'SPAN' || tag === 'BODY' || tag === 'HTML'){ if(!selfAria){ dbg('SKIP generic', 'skip'); return; } }\n    let sel = '';\n    if(selfAria){ sel = '[aria-label=\"' + selfAria.replace(/\"/g, '\\\\\"') + '\"]'; }\n    else { sel = tag.toLowerCase(); if(t.id) sel += '#' + t.id; }\n    if(sel === 'div' || sel === 'span' || sel === 'button' || sel === 'a' || sel.length < 5){ dbg('SKIP generic sel', 'skip'); return; }\n    if(txtL.length > 60){ dbg('SKIP text >60', 'skip'); return; }\n    REC.push({ type: 'CLICK', selector: sel, value: '', url: '' });\n    dbg('Rekam CLICK', 'match');\n    renderSteps(); updateCount();\n  }\n\n  function tryRecordType(source, e){\n    if(!IS_REC) return;\n    const target = e.target;\n    if(!target || !target.closest || target.closest('#jhon-rec, [id^=\"jhon-\"]')) return;\n    const editableEl = target.closest('[contenteditable=\"true\"], [contenteditable=\"plaintext-only\"]');\n    const tag = target.tagName;\n    const isField = !!editableEl || tag === 'TEXTAREA' || tag === 'INPUT';\n    if(!isField) return;\n    if(IS_X){\n      if(target.closest('[data-testid=\"tweetTextarea_0\"]')) addTypeStep('x:' + source, true);\n      else dbg('SKIP TYPE (bukan composer X)', 'skip');\n      return;\n    }\n    const el = editableEl || target;\n    const role = (el.getAttribute('role') || '').toLowerCase();\n    const type = (el.getAttribute('type') || '').toLowerCase();\n    if(type === 'search' || role === 'searchbox' || role === 'combobox'){ dbg('SKIP TYPE search', 'skip'); return; }\n    if(isCommentSection(target)){ dbg('SKIP TYPE comment', 'skip'); return; }\n    const inDialog = !!target.closest('div[role=\"dialog\"]');\n    const isInlineComposer = !inDialog && role === 'textbox' && el.offsetParent !== null && el.getBoundingClientRect().width > 100;\n    dbg('[' + source + '] tag=' + tag + ' role=' + role + ' dialog=' + inDialog + ' inline=' + isInlineComposer, (inDialog || isInlineComposer) ? 'type' : 'skip');\n    if(!inDialog && !isInlineComposer){ dbg('SKIP TYPE (bukan composer)', 'skip'); return; }\n    addTypeStep(source, inDialog || isInlineComposer);\n  }\n\n  function handleInput(e){ tryRecordType('input', e); }\n  function handleBeforeInput(e){ tryRecordType('beforeinput', e); }\n  function handleKeydown(e){ if(!e.key || e.key.length > 1) return; if(e.ctrlKey || e.metaKey || e.altKey) return; tryRecordType('keydown:' + e.key, e); }\n  function handlePaste(e){ tryRecordType('paste', e); }\n\n  function startScan(){\n    if(_scanInterval) clearInterval(_scanInterval);\n    _scanInterval = setInterval(() => {\n      if(!IS_REC) return;\n      const last = REC[REC.length - 1];\n      if(last && last.type === 'TYPE') return;\n      if(IS_X){\n        const xe = document.querySelector('[data-testid=\"tweetTextarea_0\"]');\n        if(xe && (xe.textContent || '').trim().length > 5) addTypeStep('scan', true);\n        return;\n      }\n      const dlg = document.querySelector('div[role=\"dialog\"]');\n      if(dlg && dlg.offsetParent !== null){\n        const editables = dlg.querySelectorAll('div[contenteditable=\"true\"][role=\"textbox\"], div[contenteditable=\"plaintext-only\"][role=\"textbox\"], textarea');\n        for(const ed of editables){\n          if(ed.offsetParent === null) continue;\n          const txt = (ed.textContent || ed.value || '').trim();\n          if(txt.length > 5){ addTypeStep('scan', true); return; }\n        }\n      }\n      const inlines = document.querySelectorAll('div[contenteditable=\"true\"][role=\"textbox\"], div[contenteditable=\"plaintext-only\"][role=\"textbox\"]');\n      for(const ed of inlines){\n        if(ed.offsetParent === null) continue;\n        if(isCommentSection(ed)) continue;\n        const r = ed.getBoundingClientRect(); if(r.width < 100) continue;\n        const txt = (ed.textContent || '').trim();\n        if(txt.length > 5){ addTypeStep('scan', false); return; }\n      }\n    }, 1500);\n  }\n\n  window._jhonDebug = function(){ const text = '=== DEBUG LOG ===\\n' + DEBUG_LOGS.join('\\n') + '\\n\\n=== RECORDED STEPS (' + REC.length + ') ===\\n' + JSON.stringify(REC, null, 2); console.log(text); return text; };\n  window._jhonRec = function(){ return REC; };\n  window._jhonLogs = function(){ return DEBUG_LOGS; };\n\n  document.addEventListener('click', recordClick, true);\n  document.addEventListener('input', handleInput, true);\n  document.addEventListener('beforeinput', handleBeforeInput, true);\n  document.addEventListener('keydown', handleKeydown, true);\n  document.addEventListener('paste', handlePaste, true);\n  document.addEventListener('drop', handlePaste, true);\n\n  function ensureUI(){ try { makeUI(); } catch(e){ console.error('[JHON REC] UI error:', e); } }\n  ensureUI();\n  [300, 800, 1500, 3000, 5000].forEach(t => setTimeout(ensureUI, t));\n  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureUI);\n  window.addEventListener('load', ensureUI);\n  try {\n    const mo = new MutationObserver(() => { if(!UI_CLOSED && !document.getElementById('jhon-rec')) ensureUI(); });\n    const startMO = () => { if(document.body) mo.observe(document.body, { childList: true }); };\n    if(document.body) startMO(); else document.addEventListener('DOMContentLoaded', startMO);\n  } catch(e){}\n  console.log('[JHON RECORDER v3.11] Loaded');\n})();\n";
 /* ============================================================
-   STEP CLEANER
+   STEP CLEANER (preserve _kind/_value/_text untuk X Schedule)
    ============================================================ */
 function cleanSteps(steps, autoRemoveLink, previewWait){
   const norm = [];
@@ -624,7 +639,7 @@ function cleanSteps(steps, autoRemoveLink, previewWait){
       if (isNavigation) continue;
       const isOpenComposer = /create a post|create post|buat postingan|status update|status baru|what.*mind|write something|tulis sesuatu|tulis postingan|mulai diskusi|apa yang (anda|kamu) pikirkan/i.test(selTxt);
       const isPostButton = s.selector === 'POST_BUTTON_REAL' ||
-        (/posting|bagikan|share|kirim|submit|\bpost\b|tweetbutton|buat acara|create event/i.test(sel) && !isOpenComposer) ||
+        (/posting|bagikan|share|kirim|submit|\bpost\b|tweetbutton|buat acara|create event/i.test(sel) && !isOpenComposer && !/schedule|jadwalkan/i.test(sel)) ||
         (/^buat acara$/i.test(rawText) || /^create event$/i.test(rawText));
       let finalSelector = isPostButton ? 'POST_BUTTON_REAL' : rawSel;
       let finalText = s.text || '';
@@ -638,7 +653,7 @@ function cleanSteps(steps, autoRemoveLink, previewWait){
       if (finalSelector !== rawSel) clickStep._originalSelector = rawSel;
       norm.push(clickStep);
     } else {
-      norm.push({ type: s.type, selector: s.selector, value: s.value || '', url: '' });
+      norm.push(Object.assign({}, s, { value: s.value || '', url: '' }));
     }
   }
   const out = [];
@@ -687,6 +702,22 @@ function extractEventLocation(desc, explicit){
   venue=venue.replace(/[|~]/g,' ').replace(/\s+/g,' ').trim();
   cityState=cityState.replace(/[|~]/g,' ').replace(/\s+/g,' ').trim();
   return venue ? { venue, cityState } : null;
+}
+// Excel tanpa header: judul = kolom pertama, tanggal/jam/lokasi dicari dari isi sel deskripsi
+function buildEventTargetLoose(row, colIdxs){
+  const cells = colIdxs.map(ci => String(row[ci] == null ? '' : row[ci]).replace(/\s+/g, ' ').trim()).filter(Boolean);
+  let desc = '', dt = null, di = -1;
+  for (let k = cells.length - 1; k >= 0; k--) {
+    const e = extractEventDateTime(cells[k]);
+    if (e.day && e.monthNum && e.time) { desc = cells[k]; dt = e; di = k; break; }
+  }
+  if (!dt) return null;
+  const title = (di === 0) ? 'Event' : cells[0];
+  const extras = cells.filter((c, i) => i !== 0 && i !== di && /https?:\/\//i.test(c));
+  const fullDesc = [desc].concat(extras).join('\n');
+  const lv = extractEventLocation(desc, '');
+  const locPart = lv ? ('LOC:' + lv.venue + ' ~ ' + lv.cityState + ' ||| ') : '';
+  return title + ' ||| ' + dt.monthNum + '/' + parseInt(dt.day, 10) + ' ||| ' + dt.time + ' ||| ' + locPart + fullDesc;
 }
 function buildEventTarget(row, headers){
   const hMap = {};
@@ -775,7 +806,9 @@ function buildMeta(row, headers){
   const label=sp?'HIGH SCHOOL '+sp.toUpperCase():'HIGH SCHOOL SPORTS';
   let dateTxt=''; const dm=desc.match(/\bon\s+([A-Za-z]+,\s*[A-Za-z]+\s+\d{1,2})\s*@\s*(\d{1,2})(?::(\d{2}))?\s*([ap])/i);
   if(dm) dateTxt=dm[1]+'  •  '+dm[2]+':'+(dm[3]||'00')+' '+(dm[4].toLowerCase()==='p'?'PM':'AM');
-  return { label, title: (home&&away)?home+' vs '+away:'', date: dateTxt, foot: g('state_schedule_title') };
+  const ev=extractEventDateTime(desc);
+  const sched=(ev.day && ev.monthNum && ev.time) ? { m: ev.monthNum, d: parseInt(ev.day,10), time: ev.time } : null;
+  return { label, title: (home&&away)?home+' vs '+away:'', date: dateTxt, foot: g('state_schedule_title'), sched };
 }
 function xLen(text){
   let s=String(text==null?'':text).replace(/\r/g,''); let n=0;
@@ -819,7 +852,7 @@ function updateXStat(){
 function fnv(str){ let h=0x811c9dc5; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; } return h.toString(16); }
 
 /* ============================================================
-   UNIVERSAL PLAYER v2.9b BUILDER
+   UNIVERSAL PLAYER v2.9d BUILDER (X Schedule AUTO)
    ============================================================ */
 function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, previewWait, extra){
   const ex = extra || {};
@@ -834,8 +867,8 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
   const TPL = `// ==UserScript==
 // @name         JHON PLAYER FIXED XLSX - Buat Acara
 // @namespace    jhon-player
-// @version      2.9.${dateVer}
-// @description  Auto post FB + X - Composer Grup Fix + X TT + FB URL Block Delete (multi-strategy) + X Image FB Style
+// @version      2.9d.${dateVer}
+// @description  Auto post FB + X - Composer Grup Fix + X TT + X Schedule AUTO + X Image FB Style
 // @author       JHON
 // @match        *://*.facebook.com/*
 // @match        *://*.m.facebook.com/*
@@ -959,7 +992,7 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
   }
   function buildDebugText(){
     return '=== JHON PLAYER DEBUG ===\\n'+
-      'Versi: 2.9.${dateVer}\\n'+
+      'Versi: 2.9d.${dateVer}\\n'+
       'Platform: '+(IS_X?'X':'FB')+'\\n'+
       'URL: '+location.href+'\\n'+
       'Env: '+(IS_LEMUR?'LEMUR':IS_MOBILE?'MOBILE':'DESKTOP')+' touch='+IS_TOUCH+'\\n'+
@@ -1187,7 +1220,7 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
     return false;
   }
   function findXPostBtn(){
-    const ids=['tweetButton','tweetButtonInline'];
+    const ids=['tweetButton','tweetButtonInline','scheduleButton'];
     const dlg=getActiveDialog();
     const scopes=dlg?[dlg,document]:[document];
     for(const sc of scopes){
@@ -1298,7 +1331,7 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
       const aria=(b.getAttribute('aria-label')||'').trim().toLowerCase();
       if(/comment|komentar|reply|balas|cancel|batal|close|tutup|like|suka|edit|hapus|delete|save|simpan|back|kembali|prev|sebelumnya|add to|photo|foto|video|tag|check in|perasaan|feeling/i.test(txt)) continue;
       if(/comment|komentar|reply|balas|cancel|batal|close|tutup/i.test(aria)) continue;
-      const isPost=/^(post|posting|bagikan|share|publish|kirim)$/.test(txt)||/^(post|posting|bagikan|share)$/.test(aria);
+      const isPost=/^(post|posting|bagikan|share|publish|kirim|buat acara|create event)$/.test(txt)||/^(post|posting|bagikan|share|buat acara|create event)$/.test(aria);
       const isNext=/^(next|lanjut|berikutnya|selanjutnya)$/.test(txt);
       const area=r.width*r.height;
       if(isPost&&area<postArea){postBtn=b;postArea=area;}
@@ -1757,7 +1790,7 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
         continue;
       }
       const btnText=(btn.textContent||'').trim().toLowerCase();
-      const isPost=/^(post|posting|bagikan|share|publish|kirim)$/.test(btnText);
+      const isPost=/^(post|posting|bagikan|share|publish|kirim|buat acara|create event|schedule|jadwalkan)$/.test(btnText);
       addLog('Step '+step+': klik "'+btnText+'"');
       if(isPost){ POST_CLICKED = true; PROG.pending = IDX; saveProg(); addLog('🔒 Post #' + (IDX + 1) + ' SEDANG DIKIRIM'); }
       await universalClick(btn); clicked++;
@@ -1800,11 +1833,121 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
   async function doStep(step,postText,EV,typeIdx){
     if(!EV) EV = parseEventPost(postText);
     if(typeof typeIdx!=='number') typeIdx=0;
+    if(step.type==='SET_SELECT'){
+      addLog('📅 Set ' + (step._kind||'?') + ' = ' + (step._text||step._value));
+      const sels = xScheduleSelects();
+      if(!sels.length){ addLog('❌ Tidak ada <select> jadwal di halaman (path=' + location.pathname + ')'); return false; }
+      const kindOf = (sel) => {
+        const opts = Array.from(sel.options || []);
+        const nn = opts.length;
+        if(!nn) return 'unknown';
+        const texts = opts.map(o => (o.textContent || '').trim());
+        if(nn === 2 && texts.every(t => /^(a\\.?m\\.?|p\\.?m\\.?)$/i.test(t))) return 'ampm';
+        const monthRe = /^(jan|feb|mar|apr|mei|may|jun|jul|agu|aug|sep|okt|oct|nov|des|dec)/i;
+        if(nn >= 12 && nn <= 13 && texts.filter(t => monthRe.test(t)).length >= 11) return 'month';
+        const nums = opts.map(o => { let n = parseInt((o.textContent || '').trim(), 10); if(isNaN(n)) n = parseInt(o.value, 10); return n; }).filter(n => !isNaN(n));
+        if(!nums.length) return 'unknown';
+        const mx = Math.max.apply(null, nums), mn = Math.min.apply(null, nums);
+        if(mx >= 2000) return 'year';
+        if(mx >= 28 && mx <= 31 && mn <= 1) return 'day';
+        if(mx === 59 || (mx === 55 && nn === 12)) return 'minute';
+        if(mx === 23) return 'hour';
+        if(mx === 12 && mn <= 1 && nn <= 13) return 'hour12';
+        return 'unknown';
+      };
+      const dumpSelects = () => { sels.forEach((s, i) => { const o = Array.from(s.options || []); addLog('  select#' + i + ' kind=' + kindOf(s) + ' n=' + o.length + ' first="' + ((o[0] && o[0].textContent) || '').trim() + '" last="' + ((o[o.length-1] && o[o.length-1].textContent) || '').trim() + '"'); }); };
+      let tgt = null, is12 = false, ampmSel = null;
+      for(const s of sels){ if(kindOf(s) === step._kind){ tgt = s; break; } }
+      if(!tgt && step._kind === 'hour'){
+        for(const s of sels){ if(kindOf(s) === 'hour12'){ tgt = s; is12 = true; break; } }
+        ampmSel = sels.find(s => kindOf(s) === 'ampm') || null;
+      }
+      if(!tgt){ addLog('❌ Select ' + step._kind + ' tidak ketemu (' + sels.length + ' select terlihat):'); dumpSelects(); return false; }
+      let finalVal = step._value;
+      if(step._value === 'AUTO'){
+        const S = (METAS && METAS[IDX] && METAS[IDX].sched) || null;
+        let m = 0, d = 0, hh = -1, mm = 0;
+        if(S){
+          m = S.m; d = S.d;
+          const tp = String(S.time||'').split(':');
+          hh = parseInt(tp[0], 10); mm = parseInt(tp[1], 10) || 0;
+        } else {
+          const dm2 = String(EV && EV.date || '').trim().match(/^(\\d{1,2})\\s*[\\/\\-]\\s*(\\d{1,2})$/);
+          const tm2 = String(EV && EV.time || '').trim().match(/^(\\d{1,2})[:.](\\d{2})$/);
+          if(dm2 && tm2){ m = parseInt(dm2[1],10); d = parseInt(dm2[2],10); hh = parseInt(tm2[1],10); mm = parseInt(tm2[2],10); }
+        }
+        if(!m || !d || hh < 0 || isNaN(hh)){ addLog('❌ Jadwal (tgl/bln/jam) tidak ada di Excel untuk post ini, skip'); return false; }
+        const nowD = new Date();
+        let yr = nowD.getFullYear();
+        if(nowD - new Date(yr, m - 1, d, hh, mm) > 45*86400000) yr += 1;
+        const MN_EN2 = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+        const MN_ID2 = ['januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember'];
+        const optsAll = Array.from(tgt.options || []);
+        const pickOpt = (fn) => { const o = optsAll.find(fn); return o ? o.value : null; };
+        const numEq = (o, n) => parseInt(o.value, 10) === n || parseInt((o.textContent||'').trim(), 10) === n;
+        if(step._kind === 'month'){
+          finalVal = pickOpt(o => { const t=(o.textContent||'').trim().toLowerCase(); return t === MN_EN2[m-1] || t === MN_ID2[m-1] || t.slice(0,3) === MN_EN2[m-1].slice(0,3) || t.slice(0,3) === MN_ID2[m-1].slice(0,3); });
+        }
+        else if(step._kind === 'day'){ finalVal = pickOpt(o => numEq(o, d)); }
+        else if(step._kind === 'year'){ finalVal = pickOpt(o => numEq(o, yr)); }
+        else if(step._kind === 'hour'){ finalVal = pickOpt(o => numEq(o, is12 ? (hh % 12 === 0 ? 12 : hh % 12) : hh)); }
+        else if(step._kind === 'minute'){ finalVal = pickOpt(o => numEq(o, mm)); }
+        if(finalVal === null){ addLog('❌ Opsi untuk ' + step._kind + ' tidak ada di dropdown (target ' + d + '/' + m + '/' + yr + ' ' + hh + ':' + String(mm).padStart(2,'0') + ')'); dumpSelects(); return false; }
+        addLog('📅 AUTO ' + step._kind + ' → ' + finalVal + ' (dari Excel ' + d + '/' + m + '/' + yr + ' ' + hh + ':' + String(mm).padStart(2,'0') + ')');
+      }
+      const setter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set;
+      setter.call(tgt, finalVal);
+      tgt.dispatchEvent(new Event('input', { bubbles: true }));
+      tgt.dispatchEvent(new Event('change', { bubbles: true }));
+      await sleep(300);
+      if(is12 && ampmSel && step._value === 'AUTO'){
+        const S2 = (METAS && METAS[IDX] && METAS[IDX].sched) || null;
+        let h24 = S2 ? parseInt(String(S2.time||'').split(':')[0], 10) : -1;
+        if(h24 < 0){ const tm3 = String(EV && EV.time || '').match(/^(\\d{1,2})[:.]/); if(tm3) h24 = parseInt(tm3[1], 10); }
+        const wantP = h24 >= 12;
+        const ao = Array.from(ampmSel.options || []).find(o => (o.textContent || '').trim().toLowerCase().charAt(0) === (wantP ? 'p' : 'a'));
+        if(ao){
+          Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set.call(ampmSel, ao.value);
+          ampmSel.dispatchEvent(new Event('input', { bubbles: true }));
+          ampmSel.dispatchEvent(new Event('change', { bubbles: true }));
+          await sleep(300);
+          addLog('✅ AM/PM = ' + (wantP ? 'PM' : 'AM'));
+        }
+      }
+      addLog('✅ ' + step._kind + ' = ' + finalVal);
+      return true;
+    }
     if(step.type==='CLICK'){
       const selL=(step.selector||'').toLowerCase();
       const isPostClick=step.selector==='POST_BUTTON_REAL'||(/post|bagikan|share/.test(selL)&&!/status update|status baru|what.*mind|create a post|create post|buat postingan/i.test(selL));
       const isOpen=/create a post|create post|buat postingan|what.*mind|write something|apa yang (anda|kamu) pikirkan|tulis sesuatu|tulis postingan|tulis status|mulai diskusi/i.test((step.selector||'')+' '+(step.text||''));
       if(IS_X&&/floatingactionbuttons_tweet_button|sidenav_newtweet_button|compose\\/post/i.test(selL)){ const rx=await openXComposer(step.selector); if(rx){savedComposer=rx; return true;} return false; }
+      if(IS_X && /schedule post|jadwalkan postingan/i.test(step.selector||'')){
+        const schedBtn = document.querySelector(step.selector);
+        if(!schedBtn){ addLog('❌ Schedule icon tidak ketemu'); return false; }
+        await universalClick(schedBtn);
+        addLog('📅 Buka schedule picker...');
+        for(let w=0; w<20; w++){
+          await sleep(400);
+          const sels = xScheduleSelects();
+          if(sels.length >= 3){ addLog('✅ Schedule picker OK (' + sels.length + ' select, path=' + location.pathname + ')'); await sleep(300); return true; }
+        }
+        addLog('⚠️ Schedule picker tidak muncul (select visible=' + xScheduleSelects().length + ', total=' + document.querySelectorAll('select').length + ', path=' + location.pathname + ')'); return false;
+      }
+      if(IS_X && step.selector === 'X_CONFIRM_SCHEDULE'){
+        const scope2 = document;
+        for(const b of scope2.querySelectorAll('button, div[role="button"]')){
+          if(!xVisible(b)) continue;
+          const tt = (b.textContent || '').trim().toLowerCase();
+          if(tt === 'confirm' || tt === 'konfirmasi'){
+            await universalClick(b);
+            addLog('✅ Klik Confirm schedule');
+            await sleep(600);
+            return true;
+          }
+        }
+        addLog('❌ Confirm schedule button ga ketemu'); return false;
+      }
       if(isOpen){ const r=await openComposer(step.text); if(r){savedComposer=r; return true;} return false; }
       if(isPostClick){ addLog('Flow post...'); const ok=await clickPostFlow(); savedComposer=null; return ok; }
       let el=null;
@@ -1988,8 +2131,86 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
     else return { title: txt, date: null, time: null, desc: txt, raw: txt, parts };
   }
 
+  function xScheduleSelects(){
+    const inDlg = Array.from(document.querySelectorAll('div[role="dialog"] select')).filter(xVisible);
+    if(inDlg.length >= 3) return inDlg;
+    return Array.from(document.querySelectorAll('select')).filter(xVisible);
+  }
+  async function xCloseSchedule(){
+    // Halaman jadwal X (/compose/post/schedule) bisa tertinggal terbuka setelah gagal
+    if(location.pathname.indexOf('/schedule') === -1 && xScheduleSelects().length < 3) return;
+    addLog('🧹 Tutup halaman jadwal X');
+    let back = document.querySelector('[data-testid="app-bar-back"]');
+    if(!back){
+      for(const b of document.querySelectorAll('button, div[role="button"]')){
+        if(!xVisible(b)) continue;
+        const a = (b.getAttribute('aria-label') || '').toLowerCase();
+        if(a === 'back' || a === 'kembali'){ back = b; break; }
+      }
+    }
+    if(back){ await universalClick(back); }
+    else { try{ history.back(); }catch(e){} }
+    for(let i=0;i<10;i++){
+      await sleep(400);
+      if(location.pathname.indexOf('/schedule') === -1 && xScheduleSelects().length < 3) break;
+    }
+  }
+  async function xDiscardComposer(){
+    await xCloseSchedule();
+    try{
+      const pre=findXComposer();
+      if(!pre||!pre.editable) return false;
+      addLog('🧹 Tutup & buang draft composer X');
+      const findDiscard=()=>{
+        for(const b of document.querySelectorAll('[data-testid="confirmationSheetCancel"], [data-testid="confirmationSheetConfirm"], div[role="button"], button, span')){
+          if(!xVisible(b)) continue;
+          const t=(b.textContent||'').trim().toLowerCase();
+          if(t==='discard'||t==='buang'||t==='hapus'||t==='discard post'||t==='buang postingan') return b.closest('[role="button"], button')||b;
+        }
+        return null;
+      };
+      const findClose=()=>{
+        let c=document.querySelector('[data-testid="app-bar-close"]');
+        if(c&&xVisible(c)) return c;
+        for(const b of document.querySelectorAll('button, div[role="button"]')){
+          if(!xVisible(b)) continue;
+          const a=(b.getAttribute('aria-label')||'').toLowerCase();
+          if(a==='close'||a==='tutup') return b;
+        }
+        return null;
+      };
+      let done=false;
+      for(let attempt=1;attempt<=3&&!done;attempt++){
+        const closeBtn=findClose();
+        addLog('  discard attempt '+attempt+': tombol close '+(closeBtn?'ada':'TIDAK ada'));
+        if(closeBtn){
+          await universalClick(closeBtn);
+          if(attempt>=2){ try{ closeBtn.click(); }catch(e){} }
+        } else {
+          const tgtEl=document.activeElement||pre.editable;
+          ['keydown','keyup'].forEach(ev=>{ try{ tgtEl.dispatchEvent(new KeyboardEvent(ev,{bubbles:true,cancelable:true,key:'Escape',code:'Escape',keyCode:27,which:27})); }catch(e){} });
+        }
+        for(let i=0;i<6;i++){
+          await sleep(400);
+          const dBtn=findDiscard();
+          if(dBtn){ addLog('  klik Discard'); await universalClick(dBtn); await sleep(700); break; }
+          if(!findXComposer()){ break; }
+        }
+        await sleep(400);
+        done=!findXComposer();
+        if(!done&&attempt===3){
+          const seen=[];
+          document.querySelectorAll('button, div[role="button"]').forEach(b=>{ if(seen.length<12&&xVisible(b)){ const t=((b.textContent||'').trim()||b.getAttribute('aria-label')||'').slice(0,18); if(t) seen.push(t); } });
+          addLog('  btn terlihat: '+seen.join(' | '));
+        }
+      }
+      addLog(done?'✅ Draft dibuang':'⚠️ Composer masih terbuka');
+      return done;
+    }catch(e){ addLog('discard err: '+e.message); return false; }
+  }
   async function playOnePost(postText){
     savedComposer=null; POST_CLICKED=false;
+    if(IS_X){ await xDiscardComposer(); }
     const EV = parseEventPost(postText);
     addLog('📅 Event: Judul="'+EV.title.slice(0,30)+'" Tgl='+(EV.date||'-')+' Jam='+(EV.time||'-'));
     try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){}
@@ -2003,6 +2224,7 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
       if(r===false){ addLog('❌ Step '+s.type+' gagal, post di-skip'); okAll=false; break; }
     }
     await sleep(500);
+    if(IS_X && !POST_CLICKED && (stopped || !okAll)){ await xDiscardComposer(); }
     if(stopped) return POST_CLICKED ? 'unsure' : 'stopped';
     if(!okAll) return POST_CLICKED ? 'unsure' : 'fail';
     return 'ok';
@@ -2114,7 +2336,7 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ensureUI);
   window.addEventListener('load',ensureUI);
   setInterval(ensureUI,3000);
-  console.log('[JHON PLAYER v2.9.${dateVer}] Loaded');
+  console.log('[JHON PLAYER v2.9d.${dateVer}] Loaded');
 })();`;
 
   return TPL
@@ -2134,9 +2356,11 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
    ============================================================ */
 document.getElementById('btnGen').onclick = () => {
   try {
-    if (state.target.length && document.getElementById('eventMode').checked &&
+    const hasSched = state.json.some(s => s.type === 'SET_SELECT');
+    if (!hasSched && state.target.length && document.getElementById('eventMode').checked &&
         state.target.every(t => /\|\|\|\s*\d{1,2}\/\d{1,2}\s*\|\|\|/.test(String(t)))) {
-      alert('Excel berformat BUAT ACARA. Pakai tombol EVENT di bawah.');
+      // Satu tombol: format acara FB -> otomatis bikin Event Script (pakai pengaturan di panel oranye)
+      document.getElementById('btnGenEvent').onclick();
       return;
     }
     if (!state.json.length) { alert('Ga ada step. Rekam dulu!'); return; }
@@ -2155,6 +2379,46 @@ document.getElementById('btnGen').onclick = () => {
 
     let targets = state.target.slice();
     let metas = state.target.map((_, i) => (state.meta && state.meta[i]) || null);
+    let schedInfo = '';
+    if (hasSched) {
+      // Jadwal X AUTO: bangun ulang dari baris Excel (teks post biasa + tgl/bln/jam di meta), tanpa format ||| event
+      const gOf = detectSchema(state.headers);
+      const cols = Array.from(document.querySelectorAll('#colCheckWrap input[type=checkbox]:checked')).map(c => parseInt(c.value, 10)).sort((a,b) => a-b);
+      const useCols = cols.length ? cols : state.headers.map((_, i) => i);
+      targets = []; metas = []; let noSched = 0, pastSched = 0;
+      state.rows.forEach(r => {
+        let tx, mt;
+        if (gOf) {
+          tx = buildBySchema(r, useCols, gOf);
+          mt = tx ? buildMeta(r, state.headers) : null;
+        } else {
+          // Tanpa header: tiap sel = 1 baris post; jadwal dicari dari isi sel mana pun yang memuat bulan+tanggal+jam
+          const cells = useCols.map(ci => String(r[ci] == null ? '' : r[ci]).replace(/\s+/g, ' ').trim()).filter(Boolean);
+          tx = cells.join('\n');
+          let desc = '', ev = null;
+          for (let k = cells.length - 1; k >= 0; k--) {
+            const e = extractEventDateTime(cells[k]);
+            if (e.day && e.monthNum && e.time) { desc = cells[k]; ev = e; break; }
+          }
+          let sp = ''; const sm = desc.match(/varsity\s+(.+?)\s+team/i); if (sm) sp = sm[1];
+          let dateTxt = ''; const dm = desc.match(/\bon\s+([A-Za-z]+,\s*[A-Za-z]+\s+\d{1,2})\s*@\s*(\d{1,2})(?::(\d{2}))?\s*([ap])/i);
+          if (dm) dateTxt = dm[1] + '  •  ' + dm[2] + ':' + (dm[3] || '00') + ' ' + (dm[4].toLowerCase() === 'p' ? 'PM' : 'AM');
+          mt = { label: sp ? 'HIGH SCHOOL ' + sp.toUpperCase() : 'HIGH SCHOOL SPORTS', title: cells[0] || '', date: dateTxt, foot: '',
+                 sched: ev ? { m: ev.monthNum, d: parseInt(ev.day, 10), time: ev.time } : null };
+        }
+        if (!tx || !mt) return;
+        if (!mt.sched) { noSched++; return; }
+        {
+          const nw = new Date(), tp = String(mt.sched.time).split(':');
+          let yy = nw.getFullYear(), when = new Date(yy, mt.sched.m - 1, mt.sched.d, parseInt(tp[0], 10), parseInt(tp[1], 10) || 0);
+          if (nw - when > 45 * 86400000) when = new Date(yy + 1, mt.sched.m - 1, mt.sched.d, parseInt(tp[0], 10), parseInt(tp[1], 10) || 0);
+          if (when.getTime() < nw.getTime() + 10 * 60000) { pastSched++; return; }
+        }
+        targets.push(tx); metas.push(mt);
+      });
+      if (!targets.length) { alert('Tidak ada baris dengan tanggal+jam terbaca di game_description.'); return; }
+      schedInfo = ' | Jadwal dari Excel: ' + targets.length + (noSched ? ' (' + noSched + ' baris tanpa jadwal dilewati)' : '') + (pastSched ? ' | ' + pastSched + ' sudah lewat/kurang dari 10 menit, dibuang' : '');
+    }
     const seen = new Set(), uniq = [], uniqM = [];
     targets.forEach((t, i) => { const k = String(t).replace(/\s+/g, ' ').trim().toLowerCase(); if (!seen.has(k)) { seen.add(k); uniq.push(t); uniqM.push(metas[i]); } });
     const dupCount = targets.length - uniq.length;
@@ -2186,17 +2450,16 @@ document.getElementById('btnGen').onclick = () => {
     }
     if (imgCfg) imgInfo = ' | Gambar X: ' + imMode;
 
-    const player = buildUniversalPlayer(cleaned, targets, delayInput, typeSpeedInput, autoRemoveLink, previewWait, { img: imgCfg, metas: (imMode === 'auto') ? metas : null });
+    const player = buildUniversalPlayer(cleaned, targets, delayInput, typeSpeedInput, autoRemoveLink, previewWait, { img: imgCfg, metas: (imMode === 'auto' || hasSched) ? metas : null });
 
     document.getElementById('outScript').textContent = player;
     document.getElementById('genInfo').textContent =
-      '✅ Generate OK! ' + cleaned.length + ' step + ' + targets.length + ' post | Player v2.9b | Delay: ' + (delayInput || 'auto') + ' | Speed: ' + (typeSpeedInput === 0 ? 'auto' : typeSpeedInput + 'ms') + ' | Auto-hapus URL: ' + (autoRemoveLink ? 'AKTIF (FB)' : 'OFF') + ' | Format rapi: ' + fmtCount + '/' + targets.length + xInfo + imgInfo;
+      '✅ Generate OK! ' + cleaned.length + ' step + ' + targets.length + ' post | Player v2.9d | Delay: ' + (delayInput || 'auto') + ' | Speed: ' + (typeSpeedInput === 0 ? 'auto' : typeSpeedInput + 'ms') + ' | Auto-hapus URL: ' + (autoRemoveLink ? 'AKTIF (FB)' : 'OFF') + ' | Format rapi: ' + fmtCount + '/' + targets.length + xInfo + imgInfo + schedInfo;
   } catch(e) {
     alert('Generate error: ' + e.message);
     console.error(e);
   }
 };
-
 /* ============================================================
    EVENT SCRIPT (Buat Acara) — v3.3.2 (Cover Fix)
    ============================================================ */
@@ -2299,9 +2562,7 @@ function buildEventPlayer(posts, year, opts){
       $('genInfo').textContent = '✅ Event script OK! v3.3.2 | ' + targets.length + ' event | Tahun ' + year + ' | Lokasi: ' + (useLoc ? locCount + '/' + targets.length : 'mati') + ' | Sampul: ' + (mode === 'auto' ? 'otomatis' : mode === 'image' ? 'gambar sendiri' : 'tanpa') + (dupCount ? ' | ' + dupCount + ' duplikat dibuang' : '') + (skipped ? ' | ' + skipped + ' dilewati' : '') + (pastCount ? ' | ' + pastCount + ' lewat' : '');
     } catch (e) { alert('Generate event error: ' + e.message); }
   };
-})();
-
-document.getElementById('btnCopy').onclick = async () => {
+})();document.getElementById('btnCopy').onclick = async () => {
   const t = document.getElementById('outScript').textContent || '';
   if (t.includes('Belum di-generate')) { alert('Generate dulu!'); return; }
   try { await navigator.clipboard.writeText(t); const old = document.getElementById('btnCopy').textContent; document.getElementById('btnCopy').textContent = '✅ Copied!'; setTimeout(() => document.getElementById('btnCopy').textContent = old, 1500); } catch(e) { window.prompt('Copy manual:', t); }
@@ -2312,18 +2573,18 @@ document.getElementById('btnSave').onclick = () => {
   const blob = new Blob([t], { type: 'text/javascript' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'JHON_PLAYER_v2.9b_' + Date.now() + '.user.js';
+  a.download = 'JHON_PLAYER_v2.9d_' + Date.now() + '.user.js';
   a.click();
 };
 document.getElementById('btnRecDown').onclick = () => {
   const blob = new Blob([RECORDER_SOURCE], { type: 'text/javascript' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'JHON_RECORDER_v3.10.user.js';
+  a.download = 'JHON_RECORDER_v3.11.user.js';
   a.click();
 };
 document.getElementById('btnRecCopy').onclick = async () => {
-  try { await navigator.clipboard.writeText(RECORDER_SOURCE); alert('JHON RECORDER v3.10 ter-copy!'); } catch(e) { window.prompt('Copy manual:', RECORDER_SOURCE); }
+  try { await navigator.clipboard.writeText(RECORDER_SOURCE); alert('JHON RECORDER v3.11 ter-copy!'); } catch(e) { window.prompt('Copy manual:', RECORDER_SOURCE); }
 };
 
 renderTemplates();
@@ -2334,7 +2595,7 @@ renderJsonPreview();
   if (cb) cb.checked = false;
   loadAuto();
 })();
-console.log('✅ JHON v2 Tools v17 loaded (X Image FB Style + Cover Fix)');
+console.log('✅ JHON v19 loaded (X Schedule AUTO + X Image FB Style + Cover Fix)');
 </script>
 </body>
 </html>
