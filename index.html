@@ -1770,45 +1770,52 @@ function buildUniversalPlayer(steps, posts, delay, typeSpeed, autoRemoveLink, pr
   }
 
   async function clickPostFlow(){
-    hideKeyboard(); await sleep(500);
-    const ed=savedComposer&&savedComposer.editable;
-    const hadDlg=!!getActiveDialog();
-    const edGone=()=>IS_X?(!ed||!document.contains(ed)||!xVisible(ed)||!normTxt(ed.textContent||'')):(ed?(!document.contains(ed)||ed.offsetParent===null):!findComposer());
-    let clicked=0; _snapDone=false;
-    for(let step=1;step<=8;step++){
-      await sleep(800);
-      const btn=findSubmitBtn();
-      if(!btn){
-        addLog('Step '+step+': btn NULL'); if(!_snapDone){ _snapDone=true; snapshotDbg('submit'); }
-        if(IS_X&&xOverLimit()){ addLog('❌ X: teks melebihi batas'); return false; }
-        if(IS_X&&findXPostBtn()&&xDisabled(findXPostBtn())) addLog('⏳ X: tombol Post nonaktif, tunggu...');
-        const closed=hadDlg?!getActiveDialog():edGone();
-        if(closed){
-          if(clicked>0){addLog('Dialog tertutup setelah '+clicked+' klik'); return true;}
-          addLog('❌ Dialog tertutup tapi belum ada tombol yang diklik'); return false;
-        }
-        continue;
+  hideKeyboard(); await sleep(500);
+  const ed=savedComposer&&savedComposer.editable;
+  const hadDlg=!!getActiveDialog();
+  const edGone=()=>IS_X?(!ed||!document.contains(ed)||!xVisible(ed)||!normTxt(ed.textContent||'')):(ed?(!document.contains(ed)||ed.offsetParent===null):!findComposer());
+  let clicked=0; _snapDone=false;
+  for(let step=1;step<=8;step++){
+    await sleep(800);
+    const btn=findSubmitBtn();
+    if(!btn){
+      addLog('Step '+step+': btn NULL'); if(!_snapDone){ _snapDone=true; snapshotDbg('submit'); }
+      if(IS_X&&xOverLimit()){ addLog('❌ X: teks melebihi batas'); return false; }
+      if(IS_X&&findXPostBtn()&&xDisabled(findXPostBtn())) addLog('⏳ X: tombol Post nonaktif, tunggu...');
+      const closed=hadDlg?!getActiveDialog():edGone();
+      if(closed){
+        if(clicked>0){addLog('Dialog tertutup setelah '+clicked+' klik'); return true;}
+        addLog('❌ Dialog tertutup tapi belum ada tombol yang diklik'); return false;
       }
-      const btnText=(btn.textContent||'').trim().toLowerCase();
-      const isPost=/^(post|posting|bagikan|share|publish|kirim|buat acara|create event|schedule|jadwalkan)$/.test(btnText);
-      addLog('Step '+step+': klik "'+btnText+'"');
-      if(isPost){ POST_CLICKED = true; PROG.pending = IDX; saveProg(); addLog('🔒 Post #' + (IDX + 1) + ' SEDANG DIKIRIM'); }
-      await universalClick(btn); clicked++;
-      await sleep(1000);
-      if(isPost){
-        for(let w=0;w<8;w++){
-          const closed=hadDlg?(!getActiveDialog()||!findSubmitBtn(true)):edGone();
-          if(closed){ addLog('✅ POST final, dialog tertutup'); return true; }
-          await sleep(500);
-        }
-        addLog('⚠️ Dialog belum tertutup, status TIDAK PASTI');
-        return false;
-      }
-      addLog('Next dipencet, tunggu...');
+      continue;
     }
-    addLog('❌ Tombol final tidak ketemu'); snapshotDbg('final');
-    return false;
+    const btnText=(btn.textContent||'').trim().toLowerCase();
+    const isPost=/^(post|posting|bagikan|share|publish|kirim|buat acara|create event|schedule|jadwalkan)$/.test(btnText);
+    addLog('Step '+step+': klik "'+btnText+'"');
+    if(isPost){ POST_CLICKED = true; PROG.pending = IDX; saveProg(); addLog('🔒 Post #' + (IDX + 1) + ' SEDANG DIKIRIM'); }
+    await universalClick(btn); clicked++;
+    await sleep(1000);
+    if(isPost){
+      for(let w=0;w<24;w++){
+        await sleep(500);
+        const dlgNow=getActiveDialog();
+        const btnStill=findSubmitBtn(true);
+        const edNow=savedComposer&&savedComposer.editable;
+        const edEmpty=!edNow||!document.contains(edNow)||!normTxt(edNow.textContent||'').trim();
+        const edGone2=edGone();
+        if(!dlgNow||!btnStill||edEmpty||edGone2){
+          addLog('✅ POST sukses ('+(w*0.5).toFixed(1)+'s)');
+          return true;
+        }
+      }
+      addLog('⚠️ Dialog belum tertutup setelah 12s — kemungkinan sukses, cek FB manual');
+      return false;
+    }
+    addLog('Next dipencet, tunggu...');
   }
+  addLog('❌ Tombol final tidak ketemu'); snapshotDbg('final');
+  return false;
+}
   async function openComposer(hint){
     const pre=findComposer();
     if(pre&&pre.isDialog&&pre.editable){ addLog('Composer sudah terbuka'); return pre; }
